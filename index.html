@@ -129,6 +129,21 @@ canvas{position:absolute;inset:0;pointer-events:none}
 #launchbtn:focus{position:absolute;z-index:4;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:rgba(13,11,36,.85)}
 #pnote{margin:0 0 10px;color:var(--gold);font-size:.9em}
 #pnote:empty{display:none}
+#pinfo{margin:14px 0;opacity:.75;font-size:.95em}#pinfo:empty{display:none}
+#acctbtn{position:absolute;z-index:6;top:calc(12px + env(safe-area-inset-top,0px));right:12px;background:rgba(13,11,36,.55)}
+#acctbtn[hidden]{display:none}
+#acct{position:absolute;inset:0;z-index:10;display:grid;place-items:center;padding:16px;box-sizing:border-box;background:rgba(5,4,18,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#acct[hidden]{display:none}
+#acard{width:min(420px,100%);max-height:100%;overflow:auto;box-sizing:border-box;padding:20px;border-radius:18px;background:rgba(20,17,50,.97);border:1px solid rgba(243,230,207,.2);color:var(--cream);font-family:"EB Garamond",Georgia,serif;font-size:17px}
+#acard h3{margin:0 0 4px;font-weight:500;font-size:1.4em}
+#acard label{display:block;margin:12px 0 4px;font-size:.9em;opacity:.8}
+#acard input,#acard select,#acard textarea{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid rgba(243,230,207,.3);background:rgba(243,230,207,.08);color:inherit;font:inherit}
+#acard select option{color:#241a3a}
+#acard .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#acard .msg{min-height:1.2em;margin:10px 0 0;color:var(--gold);font-size:.95em}
+#acard .sec{margin-top:18px;padding-top:6px;border-top:1px solid rgba(243,230,207,.16)}
+#acard .item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0}
+#acard .item small{display:block;opacity:.7}
 @media (max-aspect-ratio:1/1){
   #title{top:27%;margin-top:0;padding:0 3vw;box-sizing:border-box}
   .school{font-size:3.3vw;gap:.6em;max-width:94vw;justify-content:center}
@@ -174,7 +189,7 @@ canvas{position:absolute;inset:0;pointer-events:none}
 .quote{display:block;margin-top:1.6vmax;font-family:"EB Garamond",Georgia,serif;font-size:clamp(14px,2.3vmax,30px);letter-spacing:.24em;color:var(--cream);text-shadow:0 0 18px rgba(243,230,207,.4)}
 .quote em{font-family:"Fraunces",Georgia,serif;font-style:italic;font-weight:500;letter-spacing:.02em;font-variation-settings:"SOFT" 100,"opsz" 144;margin-left:.3em}
 @media (max-aspect-ratio:1/1){.quote{margin-top:4vw;font-size:3.3vw;letter-spacing:.14em}}
-@font-face{font-family:"Aurellis";src:url(data:font/woff;base64,d09GRgABAAAAAA0oAA8AAAAAFTAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHUE9TAAAMtAAAAHIAAACU16TqN09TLzIAAAHQAAAASQAAAGBEiz8RY21hcAAAAjQAAABAAAAAVACqAUFjdnQgAAAJ8AAAACkAAAA0FsQFwWZwZ20AAAJ0AAAG6wAADgxiLvt7Z2FzcAAADKwAAAAIAAAACAAAABBnbHlmAAAKLAAAAi4AAAL6U14fWWhlYWQAAAFYAAAANgAAADYwhcaKaGhlYQAAAZAAAAAgAAAAJAt8AxlobXR4AAACHAAAABgAAAAYFk8AsGxvY2EAAAocAAAADgAAAA4CHgGXbWF4cAAAAbAAAAAgAAAAIAE2DpZuYW1lAAAMXAAAADkAAAA8AycLV3Bvc3QAAAyYAAAAEwAAACD/8AAncHJlcAAACWAAAACPAAAAp2hGyJwAAQAAAAEAAGgsAMZfDzz1AA8IAAAAAADl9QddAAAAAOcPdJf/xwAABJgFmgAAAAcAAgAAAAAAAHicY2BkYGCX+ruBgYF19v/j/4+zzGAAiqAANgChPQafAAEAAAAGAEAAAgAAAAAAAgAgAEgAjQAAAIAODAAAAAB4nGNgYXZnnMDAysDBOovVmIGB0RhCM89iUGf8zMDABJSCA0YGJKAABIwHGBQYwtil/gkxJLFLMQXA1LCwsc4CKWFgAgDSlgkYAAAABZsAtAH8AAAEIP/HAeYAMwSCADQELv/OeJxjYGBgYmBgYAZiESDJCKZZGByANA8DB1COhUGBwZHBk8GbIez/f6AoEu//w/8H/+/6v/P/erA+OAAAsZsP4nicrVdrWxvHFZ7VDYwBA0LYzbruKGNRlx3JJHEcYisO2WVRHCWpwLjddW67SLhNk16S3ug1vV+UP3NWtE+db/lpec/MSgEH3KfPUz7ovDPzzpzrnFlIaEnifhTGUnYfifmdLlXuPYjohkvX4uShHN6PqNBIP5sW06LfV/tuvU4iJhGorZFwRJD4TXI0yeRhkwpa1VW9SUUtB0fF5ZrwA6oGMkn8rLAc+FmjGFAh2DuUNKsAgnRApd7hqFAo4BiqH1yu8+xovub4lyWg8kdVp4o1RaIXHcSjFadgFJY0FT2qBRHro5UgyAmuHEj6vEel1Qeja85cEPZDqoRRnYqNePetCGR3GEnq9TC1CTZtMNqIY5lZNiy6hql8JGmd19eZ+XkvkojGMJU004sSzEhem2F0k9HNxE3iOHYRLZoN+iR2IxJdJtcxdrt0hdGVbvpoQfSZ8ags9uN4kMbkeHGcexDLAfxRftykspawoNRI4dNU0ItoSvk0rXxkAFuSJlVMuBEJOcim9n3Ji+yua83nX/DCPpXX6lgM5FAOoStbLzcQoZ0o6bnpbhypuB5L2rwXYc3luOSmNGlK07nAG4mCTfM0hspXKBflp1TYf0hOHwpoaq1J57Rka+fhVknsSz6BNpOYKcmWsXZGj87NiyD01+qTwjmvTxbSrD3F8WBCANcTGQ5Vykk1wRYuJ4SkCyPHViK1Kt2yKubO2E5XsUu4X7p2fNO8Ng4dzc2KYggtrqrHayjiCzorFEIapFtNWtCgSkkXgtf4AABkiBZ4tIvRgsnXIg5aMEGRiEEfmmkxSOQwkbSIsDVpSXf3oqw02Iqv0tyBOmxSVXd3ou49O+nWMV8188s6E0vB/ShbWkIKU58WPb5yKC0/u8A/C/ghZwW5KDZ6Ucbhg7/+EBmG2oW1usK2MXbtOm/BTeaZGJ50YH8HsyeTdUYKMyGqCvEKSNwZOY5jslXTIhOFcC+iJeXLkOZRfnNQnPgy+c+lS45YFFXh+z5HYBlrTpotT3v0qec+jXCtwMea16SLOnNYXkK8WX5NZ0WWT+msxNLVWZnlZZ1VWH5dZ1Msr+hsmuU3dHaOpafVOP5USRBpJVvkvMO3pUn62OLKZPEju9g8trg6WfzYLkot6IJ3pp9w6t/WVfbzuH91+Cdh19Pwj6WCfyyvwj+WDfjHchX+sfwm/GN5Df6x/Bb8Y7kG/1i2tGybgr2uofZSIgM2ITApxSVscc2ua7ru0XXcx2dwFTryjGyqdENxY38iw2Xvnx2nOJuvhFxx9MxaVnZqYYSmyF4+dyw8Z3FuaPm8sfx5nGY54Vd14tqeagvPi5V/Cf7buqM2shtOjX29iXjAgdPtx2VJN5r0gm5dbDdp479RUdh90F9EisRKQ7Zkh1sCQnt3OOyoDnpIhIcPXRcv0obj1JYR4VvoXSt0EbQS2mnD0LJZ4dP5wDsYtpSU7SHOvH2SJlv2PKoof8yWlHBP2dyJjkqyLN2j0mr5qdjnTjuDpq3MDrWdUCV4/Lom3O3sq1QKkoGiMh5VLJeC1AVOuNM9vieFaej/ahs5VtCwzS/WTGC04LxTlCjbUytoIkhGGQVX/sqpOJGNaLARRfzmnfRLXSiE9jgWErPl1TwWqo0wvTRZohmzvq06rJSzeGcSQnbGRprEXtSSbTzobH0+KdmuPBVUaWB09/i3i03iadWeZ0txyb98zJJgnK6EP3Aed3mc4k30jxZHcZsuBlHPxZsq23ErW3eWcW9fObG66/ZOrPqn7n3SjkDTLe9JCrc03faGsI1rDE6dSUVCW7SOHaFxmetz1UY+xQeab13nAlW4Pi3cPHv+ts5m8NaMt/yPJd35f1Ux+8R9rK3Qqo7VSz3O7eygAd/yxlF5FaPbXl3lccm9mYTgLkJQs9ceXyO44dUW3cQtf+2M+S6Oc5ar9ALw65pehHiDoxgi3HIbD+84Wm9qLmh6A/DbeiTENkAPwGGwo0eOmdkFMDP3mNMB2GMOg/vMYfAd5jD4rj5CLwyAIiDHoFgfOXbuAZCde4t5DqO3mWfQO8wz6F3mGfQe6wwBEtbJIGWdDPZZJ4M+c14FGDCHwQFzGDxkDoPvGbu2gL5v7GL0vrGL0Q+MXYw+MHYx+tDYxeiHxi5GPzJ2MfoxYtyeJPAnZkSbgB9Z+Argxxx0M/Ix+ine2pzzMwuZ83PDcXLOL7D5pcmpvzQjs+PQQt7xKwuZ/muckxN+YyETfmshE34H7p3Jeb83I0P/xEKm/8FCpv8RO3PCnyxkwp8tZMJfwH15ct5fzcjQ/2Yh0/9uIdP/gZ054Z8WMmFoIRM+1aPz5suWKu6oVCiG+KcJbTD2PZo+oOLV3uH4sW5+AUSTAUQAeJxj8N7BcCIoYiMjY1/kBsadHAwcDMkFGxnYnTaJMzJogRibeTgYuSAsETYwi8NpF7MDAyMDN5DN6bSLAcLeycDMwOCyUYWxIzBig0NHBIif4rJRA8TfwcEAEWBwiZTeqA4S2sXRwMDI4tCRHAKTAIHNfGyMfFo7GP+3bmDp3cjE4LKZNYWNwcUFAKtGKvUAeJxjYMACTgGhOoM66ywGBlY/FjYGhn85rGv/vwWyJf+//RcBAIXuCpkAAAAAAAAAAAAAXQChAToBfQAAeJx9kjtv01AUx8+59/qVtomc+JHWENdO4pREDZEcJy0gcpGgEsVpOyEqGEAIMQESUyeUoUNZWFgQDAx8ARATIyyoDIiFmQmWfgIU6nIT1wNCqq6He45t6fd/ADn6DMC2pZdAoAYX+CoikKpTntUkZCSWEGRkCOw+EJIfUkQs4AalALRGawvzpeJMTvxJFMVqIaWKrBDTsM1q1Ov3+tgI0bIt2/SiXtRtBOL0ybP9LzOscHf9kPu+iZtLH3HH9H2ePFg3ZisF+SFpkdeHdxpz7eRTm2uGoQVBzG49HTtxEIgxx50rzZvLxggQQgB8L8hd8Llb0fMTUIwBID8kKai4u+C6VLFb4RSpF+kpSOSZsqCVTd2wp4xh07Zyqpqz7CaOmratqapm201DLhV9N2KdyPWLJdk4nsffjmeBAF3h4AvBMYBH3PRdPc8IRGXCyMXOMjLKaHztbbB1gzvACCWMjoTHglE4qg9liVBaoBsOPy18ZEDYCBgVz5P0o+z9Ni8KMQMY9Htn20sNb9FVThKFk203Wyj/5IAYZqK7/4nG3bYpBrZ2PooPdvG659UvJTuXF5IPya/HJzmS3MNXncpiqayKkOrVzd9/9rf8SWJa3x/QYvI9mc8sw6OvwrHbwjEH6tw3i3OqJBERXSqZIiEFMsnOAeeUxZRyy8NMnmgX4lRaOJWGNv5I9iYNwudXdVzFc3pareTdGfYz64y7Mj5g5orLc2mhxm/2/gLT+XXNAAB4nGNgYGBikGNgZmBk4WRgZBBgYICymRj4gDxHhlKGIoZUhhwgzGQoZggCstOBYjkMiQxFAG2ABocAAAB4nGNgZgCD/28Z1BmwAAAw4wIXAAABAAH//wAPeJxjYGRgYOBikGPQYWDMSSzJY+BgYAGKMPz/zwCSYcxOLQKJMUB4QDkmMM0BpC3AKp0Y/IA0K5C1hsGeweG/EpBl/f/N/7cMZkBWK4Msg9z/j0Dz0hnMgTrmA/UxAjEr2BRmIATxICQLWARIAwCvZRKSAAA=) format("woff");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Aurellis";src:url(data:font/woff;base64,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) format("woff");font-weight:400;font-style:normal;font-display:swap}
 .code{font-family:"Aurellis","Gloock",Georgia,serif;font-size:clamp(110px,27vmax,380px);letter-spacing:.03em;font-weight:400;font-synthesis:none}
 @media (max-aspect-ratio:1/1){.code{font-size:26vw;margin-top:2vw}}
 .code{width:fit-content;margin-left:auto;margin-right:auto}
@@ -204,7 +219,7 @@ canvas{position:absolute;inset:0;pointer-events:none}
         Nguyen Quang Dieu High School for the Gifted
       </span>
       <span class="sub">Chuyên Anh</span>
-      <span class="code" role="text" aria-label="AV1K18">AVIKI8</span>
+      <span class="code" role="text" aria-label="AV1K18">AV1K18</span>
       <span class="quote">GIVE IT A SHOT, <em>không thích về chót</em></span>
     </div>
   </div></div>
@@ -212,14 +227,17 @@ canvas{position:absolute;inset:0;pointer-events:none}
   <div class="hint" id="hint">Move or tilt to look around. Click for a star shower, or click the title to launch the planets.</div>
   <button class="btn" id="launchbtn" type="button">Launch planets</button>
   <button class="btn" id="tiltbtn" type="button" hidden>Tap to enable tilt</button>
+  <button class="btn" id="acctbtn" type="button">Sign in</button>
+  <div id="acct" hidden role="dialog" aria-modal="true" aria-label="Account"><div id="acard"></div></div>
   <aside id="panel" inert aria-label="Planet files">
     <button class="btn" id="back" type="button">Back to banner</button>
     <h2 id="pname"></h2>
     <div class="drop" id="drop">
       <button class="btn" id="add" type="button">Add files</button>
-      <p>or drop them here. Files stay in this browser.</p>
+      <p>or drop them here. Up to 10 MB each: images, PDF, text, Word, PowerPoint or Excel.</p>
       <input id="pick" type="file" multiple hidden>
     </div>
+    <p id="pinfo"></p>
     <p id="pnote" role="status"></p>
     <ul id="flist"></ul>
   </aside>
@@ -229,6 +247,7 @@ canvas{position:absolute;inset:0;pointer-events:none}
   <div id="lb" hidden><img alt=""></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.1/dist/umd/supabase.js"></script>
 <script>
 (function(){
   var stage=document.getElementById('stage'),scene=document.getElementById('scene');
@@ -330,26 +349,37 @@ canvas{position:absolute;inset:0;pointer-events:none}
   var NAMES={moon:'Moon',giant:'Violet giant',ringed:'Ringed planet',mini:'Blue moon'};
   var frozen=false,cur=null,files=[],db=null;
 
-  /* storage (IndexedDB, private to this browser) */
-  function openDB(cb){
-    try{
-      var r=indexedDB.open('av1k18-files',1);
-      r.onupgradeneeded=function(){r.result.createObjectStore('f',{keyPath:'id'})};
-      r.onsuccess=function(){db=r.result;cb()};r.onerror=function(){cb()};
-    }catch(e){cb()}
+  /* backend (Supabase): accounts, roles and shared files */
+  var SB_URL='https://gydszfnjejndrafawpdc.supabase.co',SB_KEY='sb_publishable_LZRtjI-W-rovCU1GFFb2ag_fog6VqE-',MAIL='av1k18nqd.netlify.app';
+  var BUCKET='planet-files',MAX=10*1024*1024,CAP_PLANETS=['moon','giant','ringed'];
+  var OK_TYPES=['image/jpeg','image/png','image/webp','image/gif','application/pdf','text/plain','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.openxmlformats-officedocument.presentationml.presentation','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+  var sb=null,me=null,amode='in';
+  try{sb=window.supabase.createClient(SB_URL,SB_KEY)}catch(e){}
+  var acct=document.getElementById('acct'),acard=document.getElementById('acard'),acctbtn=document.getElementById('acctbtn');
+  pick.accept=OK_TYPES.join(',');
+  function note(t){var n=document.getElementById('pnote');n.textContent=t;if(t)setTimeout(function(){if(n.textContent===t)n.textContent=''},7000)}
+  function canUpload(p){return !!me&&CAP_PLANETS.indexOf(p)>=0&&(me.role==='admin'||(me.role==='captain'&&me.planet===p))}
+  function fileUrl(r,dl){return sb.storage.from(BUCKET).getPublicUrl(r.path,dl?{download:r.name}:undefined).data.publicUrl}
+  async function loadFiles(){
+    if(!sb)return;
+    var q=await sb.from('files').select('*').order('created_at',{ascending:false});
+    if(q.error){note('Could not load files.');return}
+    files=q.data;badges();if(cur)render();
   }
-  function dbAll(cb){
-    if(!db)return cb([]);
-    try{var q=db.transaction('f').objectStore('f').getAll();q.onsuccess=function(){cb(q.result)};q.onerror=function(){cb([])}}catch(e){cb([])}
+  async function loadMe(){
+    me=null;
+    if(sb){
+      var s=await sb.auth.getSession(),u=s.data.session&&s.data.session.user;
+      if(u){var q=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();me=q.data}
+    }
+    acctbtn.textContent=me?'@'+me.username:'Sign in';
+    if(cur)renderDrop();if(cur)render();if(!acct.hidden)renderAcct();
   }
-  function note(t){var n=document.getElementById('pnote');n.textContent=t;if(t)setTimeout(function(){if(n.textContent===t)n.textContent=''},6000)}
-  function dbPut(r){
-    if(!db){note('Storage unavailable: this file will be lost when you close the page.');return}
-    try{var tx=db.transaction('f','readwrite');tx.objectStore('f').put({id:r.id,planet:r.planet,name:r.name,type:r.type,size:r.size,blob:r.blob});
-      tx.onabort=tx.onerror=function(){note('Could not save "'+r.name+'" (storage may be full).')}}
-    catch(e){note('Could not save "'+r.name+'".')}
+  function renderDrop(){
+    var can=canUpload(cur),n=document.getElementById('pinfo');
+    drop.hidden=!can;
+    n.textContent=cur==='mini'?'This little moon has no files.':can?'':!sb?'Files are unavailable right now.':me?'Only this planet’s captain can add files.':'Anyone can view and download. Only this planet’s captain can add files, so sign in to request that.';
   }
-  function dbDel(id){if(!db)return;try{db.transaction('f','readwrite').objectStore('f').delete(id)}catch(e){}}
 
   function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
   function fmt(n){return n<1024?n+' B':n<1048576?(n/1024).toFixed(1)+' KB':(n/1048576).toFixed(1)+' MB'}
@@ -359,51 +389,59 @@ canvas{position:absolute;inset:0;pointer-events:none}
       bd.textContent=n;bd.hidden=!n;
     });
   }
-  function isText(r){return (r.type&&r.type.indexOf('text/')===0)||/\.(txt|md|csv|json|log|xml|ya?ml|html?|css|js)$/i.test(r.name)}
   function render(){
     flist.textContent='';
+    if(cur==='mini')return;
     var mine=files.filter(function(r){return r.planet===cur});
     if(!mine.length){flist.appendChild(el('li','empty','No files on this planet yet.'));return}
     mine.forEach(function(r){
-      var li=el('li'),hd=el('div','hd'),isImg=r.type&&r.type.indexOf('image/')===0;
+      var li=el('li'),hd=el('div','hd'),url=fileUrl(r),isImg=r.mime.indexOf('image/')===0;
       var ext=(r.name.indexOf('.')>0?r.name.split('.').pop():'file').slice(0,4);
       var mid=el('div');mid.appendChild(el('div','fn',r.name));mid.appendChild(el('div','fs',fmt(r.size)));
-      var a=el('div','acts'),x=el('button','btn','Remove');x.type='button';
-      x.onclick=function(){files=files.filter(function(q){return q.id!==r.id});dbDel(r.id);render();badges()};
-      a.appendChild(x);
-      var sv=el('button','btn','Save');sv.type='button';
-      sv.onclick=function(){var u=URL.createObjectURL(r.blob),l=document.createElement('a');l.href=u;l.download=r.name;document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)};
-      a.insertBefore(sv,x);
+      var a=el('div','acts'),sv=el('button','btn','Save');sv.type='button';
+      sv.onclick=function(){var l=document.createElement('a');l.href=fileUrl(r,true);document.body.appendChild(l);l.click();l.remove()};
+      a.appendChild(sv);
+      if(me&&(r.uploader===me.id||me.role==='admin')){
+        var x=el('button','btn','Remove');x.type='button';
+        x.onclick=async function(){
+          if(!confirm('Remove “'+r.name+'”?'))return;
+          var d=await sb.from('files').delete().eq('id',r.id);
+          if(d.error){note('Could not remove: '+d.error.message);return}
+          await sb.storage.from(BUCKET).remove([r.path]);loadFiles();
+        };
+        a.appendChild(x);
+      }
       hd.appendChild(el('div','th',ext));hd.appendChild(mid);hd.appendChild(a);li.appendChild(hd);
       if(isImg){
-        var im=el('img','pv');im.alt=r.name;
-        im.onclick=function(){if(r.du){lb.firstElementChild.src=r.du;lb.hidden=false}};
-        if(r.du)im.src=r.du;
-        else{var fr=new FileReader();fr.onload=function(){r.du=fr.result;im.src=fr.result};fr.readAsDataURL(r.blob)}
+        var im=el('img','pv');im.alt=r.name;im.loading='lazy';im.src=url;
+        im.onclick=function(){lb.firstElementChild.src=url;lb.hidden=false};
         li.appendChild(im);
-      }else if(isText(r)){
-        var pre=el('pre','tx',r.tx!=null?r.tx:'Loading…');
-        if(r.tx==null){
-          var f2=new FileReader();
-          f2.onload=function(){var t=String(f2.result);r.tx=t.length>6000?t.slice(0,6000)+'\n…':t;pre.textContent=r.tx||'(empty file)'};
-          f2.readAsText(r.blob.slice(0,8000));
-        }
-        li.appendChild(pre);
+      }else if(r.mime==='text/plain'){
+        var pre=el('pre','tx','Loading…');li.appendChild(pre);
+        fetch(url).then(function(q){return q.text()}).then(function(t){pre.textContent=t.length>6000?t.slice(0,6000)+'\n…':(t||'(empty file)')}).catch(function(){pre.textContent='Preview unavailable.'});
       }else{
         var o=el('button','btn','Open');o.type='button';
-        o.onclick=function(){window.open(URL.createObjectURL(r.blob),'_blank')};
-        a.insertBefore(o,x);
+        o.onclick=function(){window.open(url,'_blank','noopener')};
+        a.insertBefore(o,sv);
       }
       flist.appendChild(li);
     });
   }
-  function addFiles(list){
-    if(!cur)return;
-    [].slice.call(list).forEach(function(f){
-      var r={id:Date.now()+'-'+Math.random().toString(36).slice(2),planet:cur,name:f.name,type:f.type,size:f.size,blob:f};
-      files.push(r);dbPut(r);
-    });
-    render();badges();
+  async function addFiles(list){
+    var planet=cur;
+    if(!planet||!canUpload(planet))return;
+    for(var f of [].slice.call(list)){
+      if(f.size>MAX){note('“'+f.name+'” is over 10 MB.');continue}
+      if(OK_TYPES.indexOf(f.type)<0){note('“'+f.name+'” is not an allowed file type.');continue}
+      var path=planet+'/'+crypto.randomUUID()+'-'+f.name.replace(/[^A-Za-z0-9._-]+/g,'_');
+      note('Uploading '+f.name+'…');
+      var up=await sb.storage.from(BUCKET).upload(path,f,{contentType:f.type});
+      if(up.error){note('Upload failed: '+up.error.message);continue}
+      var ins=await sb.from('files').insert({planet:planet,name:f.name,mime:f.type,size:f.size,path:path});
+      if(ins.error){await sb.storage.from(BUCKET).remove([path]);note('Could not save: '+ins.error.message);continue}
+      note('');
+    }
+    loadFiles();
   }
 
   /* open / close a planet */
@@ -416,7 +454,7 @@ canvas{position:absolute;inset:0;pointer-events:none}
         gx=m?sw/2:sw*.3,gy=m?sh*.28:sh*.5;
     world.style.transform='translate('+(gx-s*px).toFixed(1)+'px,'+(gy-s*py).toFixed(1)+'px) scale('+s.toFixed(3)+')';
     stage.classList.add('zoomed');
-    pname.textContent=NAMES[cur];render();
+    pname.textContent=NAMES[cur];renderDrop();render();
     panel.inert=false;panel.classList.add('open');hint.classList.add('off');
     setTimeout(function(){document.getElementById('back').focus({preventScroll:true})},700);
   }
@@ -432,7 +470,7 @@ canvas{position:absolute;inset:0;pointer-events:none}
   pick.onchange=function(){addFiles(pick.files);pick.value=''};
   lb.onclick=function(){lb.hidden=true};
   addEventListener('keydown',function(e){
-    if(e.key==='Escape'){if(!egg.hidden)hideEgg();else if(!lb.hidden)lb.hidden=true;else closePlanet()}
+    if(e.key==='Escape'){if(!egg.hidden)hideEgg();else if(!acct.hidden)closeAcct();else if(!lb.hidden)lb.hidden=true;else closePlanet()}
     var t=e.target;
     if((e.key==='Enter'||e.key===' ')&&t.classList&&t.classList.contains('planet')){e.preventDefault();openPlanet(t)}
   });
@@ -441,7 +479,116 @@ canvas{position:absolute;inset:0;pointer-events:none}
   panel.addEventListener('drop',function(e){e.preventDefault();if(e.dataTransfer&&e.dataTransfer.files.length)addFiles(e.dataTransfer.files)});
   addEventListener('dragover',function(e){e.preventDefault()});
   addEventListener('drop',function(e){e.preventDefault()});
-  openDB(function(){dbAll(function(r){var ids={};r.forEach(function(x){ids[x.id]=1});files=r.concat(files.filter(function(x){return !ids[x.id]}));badges();if(cur)render()})});
+  /* account dialog */
+  function fld(l,type,id,ph,val){
+    var w=document.createDocumentFragment(),b=el('label',null,l),i=el(type==='area'?'textarea':type==='select'?'select':'input');
+    b.htmlFor=id;i.id=id;
+    if(type==='area')i.rows=2;else if(type!=='select')i.type=type;
+    if(ph)i.placeholder=ph;if(val)i.value=val;
+    w.appendChild(b);w.appendChild(i);return w;
+  }
+  function v(id){return document.getElementById(id).value}
+  function msg(t){var m=document.getElementById('amsg');if(m)m.textContent=t||''}
+  function btn(t,fn){var b=el('button','btn',t);b.type='button';b.onclick=fn;return b}
+  function openAcct(){acct.hidden=false;renderAcct();setTimeout(function(){var i=acard.querySelector('input,select,button');if(i)i.focus()},30)}
+  function closeAcct(){acct.hidden=true;acctbtn.focus({preventScroll:true})}
+  async function submitAuth(){
+    var u=v('au').trim().toLowerCase(),pw=v('ap');
+    if(!/^[a-z0-9_]{3,20}$/.test(u))return msg('Username: 3 to 20 letters, numbers or underscores.');
+    if(pw.length<8)return msg('Password needs at least 8 characters.');
+    var r;msg('Please wait…');
+    if(amode==='up'){
+      var se=v('ae').trim();
+      if(se&&!/^\S+@\S+\.\S+$/.test(se))return msg('That school email does not look right.');
+      r=await sb.auth.signUp({email:u+'@'+MAIL,password:pw,options:{data:{username:u}}});
+      if(r.error)return msg(/already|registered|database/i.test(r.error.message)?'That username is taken.':r.error.message);
+      if(!r.data.session)return msg('Account created, but sign-in is not automatic yet. Ask an admin to turn off email confirmation.');
+      if(se)await sb.from('profiles').update({school_email:se}).eq('id',r.data.user.id);
+    }else{
+      r=await sb.auth.signInWithPassword({email:u+'@'+MAIL,password:pw});
+      if(r.error)return msg('Wrong username or password.');
+    }
+  }
+  function renderAcct(){
+    acard.textContent='';
+    var row=el('div','row');
+    if(!sb){acard.appendChild(el('p',null,'The account service is unavailable right now. Please try again later.'));row.appendChild(btn('Close',closeAcct));acard.appendChild(row);return}
+    if(!me){
+      acard.appendChild(el('h3',null,amode==='up'?'Create account':'Sign in'));
+      acard.appendChild(fld('Username','text','au','letters, numbers, _'));
+      acard.appendChild(fld('Password','password','ap','at least 8 characters'));
+      if(amode==='up')acard.appendChild(fld('School email (optional)','email','ae','name@school.edu'));
+      acard.appendChild(el('p','msg')).id='amsg';
+      row.appendChild(btn(amode==='up'?'Create account':'Sign in',submitAuth));
+      row.appendChild(btn(amode==='up'?'I have an account':'New here? Create account',function(){amode=amode==='up'?'in':'up';renderAcct()}));
+      row.appendChild(btn('Close',closeAcct));acard.appendChild(row);
+      acard.querySelectorAll('input').forEach(function(i){i.onkeydown=function(e){if(e.key==='Enter')submitAuth()}});
+      return;
+    }
+    acard.appendChild(el('h3',null,'@'+me.username));
+    acard.appendChild(el('p',null,me.role==='admin'?'Admin':me.role==='captain'?'Captain of '+NAMES[me.planet]:'Member'));
+    acard.appendChild(fld('School email (optional, visible to admins)','email','ae','name@school.edu',me.school_email||''));
+    acard.appendChild(el('p','msg')).id='amsg';
+    row.appendChild(btn('Save email',async function(){
+      var se=v('ae').trim();
+      if(se&&!/^\S+@\S+\.\S+$/.test(se))return msg('That school email does not look right.');
+      var q=await sb.from('profiles').update({school_email:se||null}).eq('id',me.id);
+      if(q.error)return msg(q.error.message);me.school_email=se||null;msg('Saved.');
+    }));
+    acard.appendChild(row);
+    if(me.role==='member'){var cap=el('div','sec');acard.appendChild(cap);captainForm(cap)}
+    if(me.role==='admin'){var ad=el('div','sec');acard.appendChild(ad);adminPanel(ad)}
+    var r2=el('div','row');
+    r2.appendChild(btn('Sign out',async function(){await sb.auth.signOut();closeAcct()}));
+    r2.appendChild(btn('Close',closeAcct));acard.appendChild(r2);
+  }
+  async function captainForm(box){
+    box.appendChild(el('h3',null,'Become a captain'));
+    var q=await sb.from('captain_requests').select('planet,status,created_at').eq('user_id',me.id).order('created_at',{ascending:false}).limit(1);
+    var last=q.data&&q.data[0];
+    if(last&&last.status==='pending'){box.appendChild(el('p',null,'Your request for '+NAMES[last.planet]+' is waiting for an admin.'));return}
+    if(last&&last.status==='rejected')box.appendChild(el('p',null,'Your last request was not approved. You can send a new one.'));
+    box.appendChild(el('p',null,'Captains upload files to their planet. An admin checks every request.'));
+    box.appendChild(fld('Planet','select','cp'));
+    var sel=document.getElementById('cp');
+    CAP_PLANETS.forEach(function(k){var o=el('option',null,NAMES[k]);o.value=k;sel.appendChild(o)});
+    box.appendChild(fld('Note for the admins (who are you?)','area','cn'));
+    box.appendChild(el('p','msg')).id='cmsg';
+    var row=el('div','row');
+    row.appendChild(btn('Send request',async function(){
+      var note2=v('cn').trim().slice(0,300),m=document.getElementById('cmsg');
+      var r=await sb.from('captain_requests').insert({user_id:me.id,planet:v('cp'),note:note2||null});
+      if(r.error){m.textContent=/duplicate|unique/i.test(r.error.message)?'You already have a pending request.':r.error.message;return}
+      box.textContent='';captainForm(box);
+    }));
+    box.appendChild(row);
+  }
+  async function adminPanel(box){
+    box.appendChild(el('h3',null,'Admin tools'));
+    async function act(fn,args){var r=await sb.rpc(fn,args);if(r.error){msg(r.error.message);return}box.textContent='';adminPanel(box);loadMe()}
+    var rq=await sb.from('captain_requests').select('id,planet,note,profiles(username)').eq('status','pending').order('created_at');
+    box.appendChild(el('p',null,rq.data&&rq.data.length?'Pending requests':'No pending requests.'));
+    (rq.data||[]).forEach(function(r){
+      var it=el('div','item'),t=el('div',null,'@'+(r.profiles?r.profiles.username:'?')+' → '+NAMES[r.planet]);
+      if(r.note)t.appendChild(el('small',null,r.note));
+      var a=el('div','acts');
+      a.appendChild(btn('Approve',function(){act('approve_captain',{req:r.id})}));
+      a.appendChild(btn('Reject',function(){act('reject_captain',{req:r.id})}));
+      it.appendChild(t);it.appendChild(a);box.appendChild(it);
+    });
+    var cs=await sb.from('profiles').select('id,username,planet').eq('role','captain');
+    box.appendChild(el('p',null,cs.data&&cs.data.length?'Current captains':'No captains yet.'));
+    (cs.data||[]).forEach(function(c){
+      var it=el('div','item');it.appendChild(el('div',null,'@'+c.username+' · '+NAMES[c.planet]));
+      var a=el('div','acts');a.appendChild(btn('Remove',function(){if(confirm('Remove @'+c.username+' as captain?'))act('remove_captain',{target:c.id})}));
+      it.appendChild(a);box.appendChild(it);
+    });
+  }
+  acctbtn.onclick=openAcct;
+  acct.addEventListener('pointerdown',function(e){if(e.target===acct)closeAcct()});
+  if(!sb)acctbtn.hidden=true;
+  else{sb.auth.onAuthStateChange(function(){setTimeout(loadMe,0)});loadMe();loadFiles()}
+
 
   /* click the title: planets shoot out from the letters (the star shower still plays) */
   var codeEl=document.querySelector('.code'),out=false;
@@ -503,7 +650,7 @@ canvas{position:absolute;inset:0;pointer-events:none}
 
   stage.addEventListener('pointerdown',function(e){
     if(!egg.hidden){hideEgg();return}
-    if(e.target.closest('#panel')||e.target.closest('#lb')||e.target.closest('#tiltbtn')||e.target.closest('#launchbtn'))return;
+    if(e.target.closest('#panel')||e.target.closest('#lb')||e.target.closest('#tiltbtn')||e.target.closest('#launchbtn')||e.target.closest('#acct')||e.target.closest('#acctbtn'))return;
     askGyro();hint.classList.add('off');
     if(frozen){closePlanet();return}
     var pl=e.target.closest('.planet');
