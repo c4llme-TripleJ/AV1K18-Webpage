@@ -1,0 +1,4 @@
+/og.png
+  Cache-Control: public, max-age=86400
+/icon-*.png
+  Cache-Control: public, max-age=604800
