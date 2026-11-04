@@ -140,4 +140,3 @@ create policy "delete own or admin" on storage.objects for delete to authenticat
 -- ───────── Make the host and web devs admins ─────────
 -- After each of them has created an account on the site, run (with their usernames):
 -- update public.profiles set role = 'admin' where username in ('host_username','dev1','dev2','dev3');
-  
