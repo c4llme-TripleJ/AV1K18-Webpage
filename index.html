@@ -244,6 +244,11 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   background:conic-gradient(from 0deg,rgba(242,184,102,0),rgba(242,184,102,.95),rgba(185,166,255,.85),rgba(122,92,255,0) 62%,rgba(242,184,102,0));
   -webkit-mask-image:radial-gradient(circle,transparent 45%,#000 52%,#000 63%,transparent 72%);mask-image:radial-gradient(circle,transparent 45%,#000 52%,#000 63%,transparent 72%);
   animation:spin 2.2s linear infinite}
+#pusage{margin:0 0 14px;font-size:.9em;opacity:.9}
+.bar{height:8px;border-radius:99px;background:rgba(243,230,207,.16);overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#b9a6ff,#f2b866);border-radius:99px}
+.bar.warn i{background:#f2b866}.bar.crit i{background:#ff7a7a}
+#pusage .uw,#acard .small{font-size:.85em;opacity:.8}#pusage .uw{color:var(--gold);opacity:1;margin-top:4px}
 </style>
 </head>
 <body>
@@ -281,6 +286,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
       <input id="pick" type="file" multiple hidden>
     </div>
     <p id="pinfo"></p>
+    <div id="pusage"></div>
     <p id="pnote" role="status"></p>
     <ul id="flist"></ul>
   </aside>
@@ -301,6 +307,8 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   var LD=layers.map(function(el){return +el.dataset.d}),LZ=layers.map(function(el){return parseFloat(getComputedStyle(el).getPropertyValue('--z'))||0});
   var title=document.getElementById('title'),hint=document.getElementById('hint');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DEBUG=/[?&#]debug\b/.test(location.search+location.hash),dbgErr='',feedCount=0,dbgF={ema:16.7,worst:0};
+  if(DEBUG){addEventListener('error',function(e){dbgErr=(e.message||'error')+(e.lineno?' @line '+e.lineno:'')});addEventListener('unhandledrejection',function(e){dbgErr='promise: '+((e.reason&&e.reason.message)||e.reason)})}
   var W,H,dpr,stars=[],meteors=[],bursts=[],hadFx=false,lite=false,fpsAcc=0,fpsN=0,lastScene='',lastT=[];
   var tx=0,ty=0,cx=0,cy=0,lastInput=-9999,gyro=false,permAsked=false;
 
@@ -341,7 +349,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   function feed(g,bt){
     var ang=(screen.orientation&&screen.orientation.angle)||window.orientation||0,x,y;
     if(ang===90){x=bt;y=-g}else if(ang===270||ang===-90){x=-bt;y=g}else{x=g;y=bt}
-    gyro=true;
+    gyro=true;feedCount++;
     if(!base)base={x:x,y:y};           /* the pose you first hold the phone in is "flat" */
     if(frozen)return;
     base.x+=(x-base.x)*.003;base.y+=(y-base.y)*.003; /* slowly follows how you hold it */
@@ -365,11 +373,13 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   var isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   var needPerm=isIOS&&typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function';
   var tbtn=document.getElementById('tiltbtn');
+  var permState=needPerm?'not asked yet':'not needed';
   function askGyro(){
-    if(!needPerm||permAsked)return;permAsked=true;
+    if(!needPerm||permAsked)return;permAsked=true;permState='asking';
     DeviceOrientationEvent.requestPermission().then(function(r){
+      permState=r;
       if(r==='granted'){addEventListener('deviceorientation',onOrient);tbtn.hidden=true}else permAsked=false;
-    }).catch(function(){permAsked=false});
+    }).catch(function(e){permState='error: '+((e&&e.message)||e);permAsked=false});
   }
   if(needPerm){tbtn.hidden=false;tbtn.onclick=askGyro}
   else{if(window.DeviceOrientationEvent)addEventListener('deviceorientation',onOrient);if(window.DeviceMotionEvent)addEventListener('devicemotion',onMotion)}
@@ -402,6 +412,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
 
   /* backend (Supabase): accounts, roles and shared files */
   var SB_URL='https://gydszfnjejndrafawpdc.supabase.co',SB_KEY='sb_publishable_LZRtjI-W-rovCU1GFFb2ag_fog6VqE-',MAIL='av1k18nqd.netlify.app';
+  var PLAN_BYTES=1024*1024*1024;            /* Supabase free plan: 1 GB of file storage. Change this if the plan changes. */
   var BUCKET='planet-files',MAX=10*1024*1024,CAP_PLANETS=['moon','giant','ringed'];
   var OK_TYPES=['image/jpeg','image/png','image/webp','image/gif','application/pdf','text/plain','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.openxmlformats-officedocument.presentationml.presentation','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
   var sb=null,me=null,amode='in';
@@ -410,13 +421,25 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   pick.accept='image/*,.pdf,.txt,.docx,.pptx,.xlsx,'+OK_TYPES.join(',');
   function uid(){return(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)})}
   function note(t,keep){var n=document.getElementById('pnote');n.textContent=t;if(t){if(n.scrollIntoView)n.scrollIntoView({block:'nearest'});if(!keep)setTimeout(function(){if(n.textContent===t)n.textContent=''},7000)}}
+  function fmtS(n){return n>=1073741824?(n/1073741824).toFixed(2)+' GB':fmt(n)}
+  function usage(){var t=0,by={};files.forEach(function(r){t+=r.size;by[r.planet]=(by[r.planet]||0)+r.size});return{total:t,by:by,pct:t/PLAN_BYTES*100}}
+  function usageBar(pct){var b=el('div','bar'+(pct>=95?' crit':pct>=80?' warn':'')),i=el('i');i.style.width=Math.min(100,pct).toFixed(1)+'%';b.appendChild(i);return b}
+  function usageWarn(pct){return pct>=95?'Storage is almost full. New uploads may fail. Please remove files you no longer need.':pct>=80?'Storage is getting full. Please remove files you no longer need.':''}
+  function renderUsage(){
+    var box=document.getElementById('pusage');box.textContent='';
+    if(!cur||!canUpload(cur))return;
+    var u=usage();
+    box.appendChild(el('div',null,'This planet: '+fmtS(u.by[cur]||0)+' · All planets: '+fmtS(u.total)+' of '+fmtS(PLAN_BYTES)+' ('+u.pct.toFixed(0)+'%)'));
+    box.appendChild(usageBar(u.pct));
+    var w=usageWarn(u.pct);if(w)box.appendChild(el('div','uw',w));
+  }
   function canUpload(p){return !!me&&CAP_PLANETS.indexOf(p)>=0&&(me.role==='admin'||(me.role==='captain'&&me.planet===p))}
   function fileUrl(r,dl){return sb.storage.from(BUCKET).getPublicUrl(r.path,dl?{download:r.name}:undefined).data.publicUrl}
   async function loadFiles(){
     if(!sb)return;
     var q=await sb.from('files').select('*').order('created_at',{ascending:false});
     if(q.error){note('Could not load files.');return}
-    files=q.data;badges();if(cur)render();
+    files=q.data;badges();if(cur){render();renderUsage()}
   }
   async function loadMe(){
     var m=null;
@@ -432,7 +455,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   }
   function renderDrop(){
     var can=canUpload(cur),n=document.getElementById('pinfo');
-    drop.hidden=!can;
+    drop.hidden=!can;renderUsage();
     n.textContent=cur==='mini'?'This little moon has no files.':can?'':!sb?'Files are unavailable right now.':me?'Only this planet’s captain can add files.':'Anyone can view and download. Only this planet’s captain can add files, so sign in to request that.';
   }
 
@@ -513,6 +536,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
         var m=mimeOf(f);
         if(!m){errs.push('“'+f.name+'” is not an allowed type (images, PDF, text, Word, PowerPoint, Excel).');continue}
         if(f.size>MAX){errs.push('“'+f.name+'” is over 10 MB.');continue}
+        if(usage().total+f.size>PLAN_BYTES){errs.push('Storage is full. Ask an admin to free up space before uploading “'+f.name+'”.');continue}
         note('Uploading '+label+'…',1);
         var path=planet+'/'+uid()+'-'+f.name.replace(/[^A-Za-z0-9._-]+/g,'_');
         var up=await sb.storage.from(BUCKET).upload(path,f,{contentType:m});
@@ -647,6 +671,11 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   }
   async function adminPanel(box){
     box.appendChild(el('h3',null,'Admin tools'));
+    var us=usage();
+    box.appendChild(el('p',null,'Storage: '+fmtS(us.total)+' of '+fmtS(PLAN_BYTES)+' ('+us.pct.toFixed(0)+'%)'));
+    box.appendChild(usageBar(us.pct));
+    box.appendChild(el('p','small','Moon '+fmtS(us.by.moon||0)+' · Violet giant '+fmtS(us.by.giant||0)+' · Ringed planet '+fmtS(us.by.ringed||0)+'. Counts files added through the site; the exact figure is in Supabase under Storage.'));
+    var uw=usageWarn(us.pct);if(uw)box.appendChild(el('p','msg',uw));
     async function act(fn,args){var r=await sb.rpc(fn,args);if(r.error){msg(r.error.message);return}box.textContent='';adminPanel(box);loadMe()}
     var rq=await sb.from('captain_requests').select('id,planet,note,profiles(username)').eq('status','pending').order('created_at');
     box.appendChild(el('p',null,rq.data&&rq.data.length?'Pending requests':'No pending requests.'));
@@ -787,6 +816,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   var last=performance.now();
   function frame(now){
     var raw=now-last;var dt=Math.min(raw/1000,.05);last=now;var t=now/1000;
+    if(DEBUG&&raw<1000){dbgF.ema+=(raw-dbgF.ema)*.05;if(raw>dbgF.worst)dbgF.worst=raw}
     if(raw<200&&!lite){fpsAcc+=raw;if(++fpsN===45){if(fpsAcc/45>21)goLite();fpsAcc=0;fpsN=0}}
     if(now-lastInput>3000&&!frozen){var dr=reduce?.3:1;tx=Math.sin(t*.45)*.4*dr;ty=Math.cos(t*.33)*.25*dr}
     var ease=gyro?.16:.08,par=gyro?44:30;cx+=(tx-cx)*ease;cy+=(ty-cy)*ease;
@@ -845,6 +875,32 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   var land=innerWidth>innerHeight;
   function onResize(){size();var l=innerWidth>innerHeight;if(l!==land){land=l;if(cur)closePlanet()}}
   addEventListener('resize',onResize);addEventListener('orientationchange',function(){setTimeout(onResize,300)});
+  /* ?debug  ->  small diagnostics overlay for testers (tap it to copy the text) */
+  if(DEBUG){
+    var dbgEl=document.createElement('pre'),dbgTxt='',dbgT=0;
+    dbgEl.style.cssText='position:fixed;left:6px;right:6px;bottom:calc(6px + env(safe-area-inset-bottom,0px));z-index:99;margin:0;padding:8px;border-radius:8px;background:rgba(0,0,0,.84);color:#9fffd0;font:11px/1.35 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word';
+    document.body.appendChild(dbgEl);
+    dbgEl.onclick=function(){
+      var done=function(){dbgEl.style.outline='2px solid #9fffd0';setTimeout(function(){dbgEl.style.outline=''},600)};
+      if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(dbgTxt).then(done,function(){});
+      else{var r=document.createRange();r.selectNodeContents(dbgEl);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);try{document.execCommand('copy');done()}catch(e){}}
+    };
+    setInterval(function(){
+      if(++dbgT%10===0)dbgF.worst=0;
+      dbgTxt=['AV1K18 debug (tap to copy)',
+        'time: '+new Date().toISOString().slice(11,19)+'Z',
+        'ua: '+navigator.userAgent.replace('Mozilla/5.0 ',''),
+        'screen: '+innerWidth+'x'+innerHeight+' @'+(window.devicePixelRatio||1)+' '+(innerWidth>innerHeight?'landscape':'portrait'),
+        'iOS: '+isIOS+'  touch: '+('ontouchstart' in window)+'  home-screen app: '+!!(navigator.standalone||matchMedia('(display-mode: standalone)').matches),
+        'reduce-motion: '+reduce+'  lite mode: '+lite,
+        'tilt: needs-permission='+needPerm+'  permission='+permState+'  active='+gyro+'  samples='+feedCount,
+        'fps: ~'+Math.round(1000/dbgF.ema)+'  worst frame (5s): '+Math.round(dbgF.worst)+' ms',
+        'mode: '+mode+'  live planets: '+document.querySelectorAll('.planet.live').length+'  open: '+(cur||'none'),
+        'server: '+(sb?'loaded':'NOT loaded')+'  user: '+(me?'@'+me.username+' ('+me.role+(me.planet?':'+me.planet:'')+')':'signed out')+'  files: '+files.length,
+        'last error: '+(dbgErr||'none')].join('\n');
+      dbgEl.textContent=dbgTxt;
+    },500);
+  }
   size();seed();requestAnimationFrame(frame);
 })();
 </script>
