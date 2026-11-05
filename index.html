@@ -407,9 +407,9 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   var sb=null,me=null,amode='in';
   try{sb=window.supabase.createClient(SB_URL,SB_KEY)}catch(e){}
   var acct=document.getElementById('acct'),acard=document.getElementById('acard'),acctbtn=document.getElementById('acctbtn');
-  pick.accept=OK_TYPES.join(',');
+  pick.accept='image/*,.pdf,.txt,.docx,.pptx,.xlsx,'+OK_TYPES.join(',');
   function uid(){return(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)})}
-  function note(t){var n=document.getElementById('pnote');n.textContent=t;if(t)setTimeout(function(){if(n.textContent===t)n.textContent=''},7000)}
+  function note(t,keep){var n=document.getElementById('pnote');n.textContent=t;if(t){if(n.scrollIntoView)n.scrollIntoView({block:'nearest'});if(!keep)setTimeout(function(){if(n.textContent===t)n.textContent=''},7000)}}
   function canUpload(p){return !!me&&CAP_PLANETS.indexOf(p)>=0&&(me.role==='admin'||(me.role==='captain'&&me.planet===p))}
   function fileUrl(r,dl){return sb.storage.from(BUCKET).getPublicUrl(r.path,dl?{download:r.name}:undefined).data.publicUrl}
   async function loadFiles(){
@@ -419,11 +419,14 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
     files=q.data;badges();if(cur)render();
   }
   async function loadMe(){
-    me=null;
+    var m=null;
     if(sb){
-      var s=await sb.auth.getSession(),u=s.data.session&&s.data.session.user;
-      if(u){var q=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();me=q.data}
+      try{
+        var s=await sb.auth.getSession(),u=s.data.session&&s.data.session.user;
+        if(u){var q=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();if(q.error)return;m=q.data}
+      }catch(e){return}                      /* network hiccup: keep what we had */
     }
+    me=m;
     acctbtn.textContent=me?'@'+me.username:'Sign in';
     if(cur)renderDrop();if(cur)render();if(!acct.hidden)renderAcct();
   }
@@ -479,20 +482,47 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
       flist.appendChild(li);
     });
   }
+  var EXT={jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif',pdf:'application/pdf',txt:'text/plain',docx:OK_TYPES[5],pptx:OK_TYPES[6],xlsx:OK_TYPES[7]};
+  function isPhoto(f){return /^image\/(jpeg|png|webp|heic|heif)$/.test(f.type)||/\.(jpe?g|png|webp|heic|heif)$/i.test(f.name)}
+  function mimeOf(f){if(f.type&&OK_TYPES.indexOf(f.type)>=0)return f.type;return EXT[(f.name.split('.').pop()||'').toLowerCase()]||''}
+  /* phone photos are huge: shrink anything over 3 MB or 2400 px to a JPEG (also turns iPhone HEIC into JPEG) */
+  function shrink(f){
+    return new Promise(function(res){
+      var url=URL.createObjectURL(f),im=new Image();
+      im.onload=function(){
+        URL.revokeObjectURL(url);
+        var sc=Math.min(1,2400/Math.max(im.naturalWidth,im.naturalHeight));
+        if(sc===1&&f.size<=3*1048576&&mimeOf(f))return res(f);
+        var c=document.createElement('canvas'),x;c.width=Math.round(im.naturalWidth*sc);c.height=Math.round(im.naturalHeight*sc);
+        x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+        c.toBlob(function(b){res(b?new File([b],f.name.replace(/\.[^.]+$/,'')+'.jpg',{type:'image/jpeg'}):f)},'image/jpeg',.86);
+      };
+      im.onerror=function(){URL.revokeObjectURL(url);res(f)};
+      im.src=url;
+    });
+  }
   async function addFiles(list){
-    var planet=cur;
-    if(!planet||!canUpload(planet))return;
-    for(var f of [].slice.call(list)){
-      if(f.size>MAX){note('“'+f.name+'” is over 10 MB.');continue}
-      if(OK_TYPES.indexOf(f.type)<0){note('“'+f.name+'” is not an allowed file type.');continue}
-      var path=planet+'/'+uid()+'-'+f.name.replace(/[^A-Za-z0-9._-]+/g,'_');
-      note('Uploading '+f.name+'…');
-      var up=await sb.storage.from(BUCKET).upload(path,f,{contentType:f.type});
-      if(up.error){note('Upload failed: '+up.error.message);continue}
-      var ins=await sb.from('files').insert({planet:planet,name:f.name,mime:f.type,size:f.size,path:path});
-      if(ins.error){await sb.storage.from(BUCKET).remove([path]);note('Could not save: '+ins.error.message);continue}
-      note('');
+    var planet=cur,items=[].slice.call(list||[]),errs=[],done=0;
+    if(!items.length)return;
+    if(!sb||!planet){note('Not ready. Close this planet, open it again and retry.',1);return}
+    if(!canUpload(planet)){note('Only this planet’s captain can add files. Make sure you are signed in as the captain.',1);return}
+    for(var i=0;i<items.length;i++){
+      var f=items[i],label=f.name+(items.length>1?' ('+(i+1)+'/'+items.length+')':'');
+      try{
+        if(isPhoto(f)){note('Preparing '+label+'…',1);f=await shrink(f)}
+        var m=mimeOf(f);
+        if(!m){errs.push('“'+f.name+'” is not an allowed type (images, PDF, text, Word, PowerPoint, Excel).');continue}
+        if(f.size>MAX){errs.push('“'+f.name+'” is over 10 MB.');continue}
+        note('Uploading '+label+'…',1);
+        var path=planet+'/'+uid()+'-'+f.name.replace(/[^A-Za-z0-9._-]+/g,'_');
+        var up=await sb.storage.from(BUCKET).upload(path,f,{contentType:m});
+        if(up.error){errs.push('Upload of “'+f.name+'” failed: '+up.error.message);continue}
+        var ins=await sb.from('files').insert({planet:planet,name:f.name,mime:m,size:f.size,path:path});
+        if(ins.error){await sb.storage.from(BUCKET).remove([path]);errs.push('Could not save “'+f.name+'”: '+ins.error.message);continue}
+        done++;
+      }catch(e){errs.push('“'+f.name+'”: '+(e&&e.message?e.message:'something went wrong'))}
     }
+    note(errs.length?errs.join(' '):(done?'Uploaded.':''),errs.length>0);
     loadFiles();
   }
 
@@ -519,7 +549,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   }
   document.getElementById('back').onclick=closePlanet;
   document.getElementById('add').onclick=function(){pick.click()};
-  pick.onchange=function(){addFiles(pick.files);pick.value=''};
+  pick.onchange=function(){var fl=[].slice.call(pick.files);var clear=function(){pick.value=''};addFiles(fl).then(clear,clear)};
   lb.onclick=function(){lb.hidden=true};
   addEventListener('keydown',function(e){
     if(e.key==='Escape'){if(!egg.hidden)hideEgg();else if(!acct.hidden)closeAcct();else if(!lb.hidden)lb.hidden=true;else closePlanet()}
@@ -639,7 +669,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   acctbtn.onclick=openAcct;
   acct.addEventListener('pointerdown',function(e){if(e.target===acct)closeAcct()});
   if(!sb)acctbtn.hidden=true;
-  else{sb.auth.onAuthStateChange(function(){setTimeout(loadMe,0)});loadMe();loadFiles()}
+  else{sb.auth.onAuthStateChange(function(ev,ses){if(ev==='TOKEN_REFRESHED')return;if(ev==='SIGNED_IN'&&me&&ses&&ses.user&&ses.user.id===me.id)return;setTimeout(loadMe,0)});loadMe();loadFiles()}
 
 
   /* click the title: planets shoot out; click again: a black hole swallows them */
