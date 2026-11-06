@@ -236,15 +236,25 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   .frame img{max-width:52vw;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px)}
   #egcard figcaption{max-width:34vw;text-align:left}
 }
-/* black hole */
-#holewrap{left:0;top:0;width:0;height:0;pointer-events:none}
-#hole{position:absolute;width:30vmin;height:30vmin;margin:-15vmin 0 0 -15vmin;border-radius:50%;transform:scale(0);
-  background:radial-gradient(circle,#000 0,#000 62%,#0b0420 100%);
-  box-shadow:0 0 0 .5vmin rgba(255,200,110,.9),0 0 3vmin 1vmin rgba(190,140,255,.75),0 0 10vmin 3vmin rgba(110,70,255,.4)}
-#hole::before{content:"";position:absolute;top:-34%;right:-34%;bottom:-34%;left:-34%;border-radius:50%;
-  background:conic-gradient(from 0deg,rgba(242,184,102,0),rgba(242,184,102,.95),rgba(185,166,255,.85),rgba(122,92,255,0) 62%,rgba(242,184,102,0));
-  -webkit-mask-image:radial-gradient(circle,transparent 45%,#000 52%,#000 63%,transparent 72%);mask-image:radial-gradient(circle,transparent 45%,#000 52%,#000 63%,transparent 72%);
-  animation:spin 2.2s linear infinite}
+/* black hole: black disc + photon ring, a tilted accretion disk (back half behind the planets, front half over the hole) */
+#holewrap,#holebwrap{left:0;top:0;width:0;height:0;pointer-events:none}
+#hole,#holeb{position:absolute;width:30vmin;height:30vmin;margin:-15vmin 0 0 -15vmin;transform:scale(0);display:none}
+#hole.on,#holeb.on{display:block}
+#hole{border-radius:50%;background:radial-gradient(circle,#000 0,#000 72%,#05010c 100%);
+  box-shadow:0 0 0 .3vmin rgba(255,240,205,.95),0 0 1.6vmin .5vmin rgba(255,176,96,.7),0 0 6vmin 2vmin rgba(150,100,255,.4)}
+#holeb::before{content:"";position:absolute;top:-17%;right:-17%;bottom:-17%;left:-17%;border-radius:50%;
+  background:conic-gradient(from 200deg,rgba(255,226,170,.15),rgba(255,226,170,.95) 140deg,rgba(255,226,170,.15) 300deg,rgba(255,226,170,.15));
+  -webkit-mask-image:radial-gradient(circle,transparent 60%,#000 65%,#000 73%,transparent 79%);mask-image:radial-gradient(circle,transparent 60%,#000 65%,#000 73%,transparent 79%)}
+.hf{position:absolute;top:-90%;left:-90%;width:280%;height:280%;transform:rotate(-14deg)}
+.hf.f{clip-path:inset(50% 0 0 0);-webkit-clip-path:inset(50% 0 0 0)}
+.hc{position:absolute;top:0;right:0;bottom:0;left:0;border-radius:50%;overflow:hidden;isolation:isolate;-webkit-mask-image:-webkit-radial-gradient(white,black)}
+.dk{position:absolute;top:0;right:0;bottom:0;left:0;border-radius:50%;transform:scaleY(.22);overflow:hidden;
+  -webkit-mask-image:radial-gradient(circle closest-side,transparent 40%,#000 46%,rgba(0,0,0,.8) 62%,rgba(0,0,0,.3) 82%,transparent 100%);
+  mask-image:radial-gradient(circle closest-side,transparent 40%,#000 46%,rgba(0,0,0,.8) 62%,rgba(0,0,0,.3) 82%,transparent 100%)}
+.dk i{position:absolute;top:0;right:0;bottom:0;left:0;border-radius:50%;animation:spin 7s linear infinite;will-change:transform;
+  background:conic-gradient(from 0deg,#fffbe6 0deg,#ffc56e 45deg,#ff8a3d 120deg,rgba(130,80,210,.55) 200deg,rgba(70,40,140,.3) 270deg,#ffb25e 330deg,#fffbe6 360deg)}
+.lite .dk i{animation:none}
+@media (prefers-reduced-motion:reduce){.dk i{animation-duration:30s}}
 #pusage{margin:0 0 14px;font-size:.9em;opacity:.9}
 .bar{height:8px;border-radius:99px;background:rgba(243,230,207,.16);overflow:hidden;margin:6px 0}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,#b9a6ff,#f2b866);border-radius:99px}
@@ -258,6 +268,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   <div id="world">
   <canvas id="bg"></canvas>
   <div id="scene">
+    <div class="l" data-d="1.6" id="holebwrap"><div id="holeb"><div class="hf"><div class="dk"><i></i></div></div></div></div>
     <div class="l planet moon" data-d="0.5" data-p="moon" tabindex="0" role="button" aria-label="Open Moon files"><span class="badge" hidden></span></div>
     <div class="l planet giant" data-d="0.35" data-p="giant" tabindex="0" role="button" aria-label="Open Violet giant files"><i class="sky"></i><span class="badge" hidden></span></div>
     <div class="l planet ringed" data-d="1.1" data-p="ringed" tabindex="0" role="button" aria-label="Open Ringed planet files"><i></i><span class="badge" hidden></span></div>
@@ -271,7 +282,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
       <span class="code" role="text" aria-label="AV1K18">AV1K18</span>
       <span class="quote">GIVE IT A SHOT, <em>không thích về chót</em></span>
     </div>
-    <div class="l" data-d="1.6" id="holewrap"><div id="hole"></div></div>
+    <div class="l" data-d="1.6" id="holewrap"><div id="hole"><div class="hc"><div class="hf f"><div class="dk"><i></i></div></div></div></div></div>
   </div></div>
   <canvas id="fx"></canvas>
   <div class="hint" id="hint">Move or tilt to look around. Click for a star shower, or click the title to launch the planets.</div>
@@ -712,8 +723,9 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
 
 
   /* click the title: planets shoot out; click again: a black hole swallows them */
-  var codeEl=document.querySelector('.code'),mode='in',anim=null,lbn=document.getElementById('launchbtn'),hole=document.getElementById('hole');
-  var PS=planets.map(function(){return{sx:0,sy:0,sc:.04,op:0,ox:0,oy:0}}),lastO=[],pidx=layers.map(function(el){return planets.indexOf(el)});
+  var codeEl=document.querySelector('.code'),mode='in',anim=null,lbn=document.getElementById('launchbtn'),hole=document.getElementById('hole'),holeb=document.getElementById('holeb');
+  var PS=planets.map(function(){return{sx:0,sy:0,sc:.04,op:0,ox:0,oy:0,st:0,ang:0}}),lastO=[],pidx=layers.map(function(el){return planets.indexOf(el)});
+  function setHole(v){var x='scale('+v.toFixed(3)+')';hole.style.transform=x;holeb.style.transform=x}
   function hitWord(x,y){var r=codeEl.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom}
   function aimPlanets(){
     var wx=title.offsetLeft+codeEl.offsetLeft+codeEl.offsetWidth/2,wy=title.offsetTop+codeEl.offsetTop+codeEl.offsetHeight/2;
@@ -723,12 +735,12 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   function setLive(on){planets.forEach(function(pl){pl.classList.toggle('live',on)})}
   function launchPlanets(){
     if(mode!=='in')return;mode='launching';aimPlanets();
-    PS.forEach(function(s){s.sc=.04;s.op=0});
+    PS.forEach(function(s){s.sc=.04;s.op=0;s.st=0});
     anim={type:'launch',t0:performance.now()};lbn.textContent=t('blackhole');
   }
   function suckPlanets(){
     if(mode!=='out')return;mode='sucking';setLive(false);var w=aimPlanets();
-    hole.style.left=w.x+'px';hole.style.top=w.y+'px';title.style.opacity='.25';hint.classList.add('off');
+    [hole,holeb].forEach(function(h){h.style.left=w.x+'px';h.style.top=w.y+'px';h.classList.add('on')});title.style.opacity='.25';hint.classList.add('off');
     anim={type:'suck',t0:performance.now()};
   }
   function stepAnim(now){
@@ -749,13 +761,14 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
         s=PS[i];u=Math.max(0,Math.min(1,(e-.6-i*.22)/1.7));
         var q=Math.pow(u,2.1),R0=Math.hypot(s.ox,s.oy),a0=Math.atan2(-s.oy,-s.ox),R=R0*(1-q),th=a0+q*8.2;
         s.sx=s.ox+R*Math.cos(th);s.sy=s.oy+R*Math.sin(th);s.sc=Math.max(.03,1-.97*q);s.op=u<.85?1:Math.max(0,(1-u)/.15);
+        s.st=q*q;s.ang=th;                                /* tidal stretch toward the hole */
       }
       if(e<.6){hs=e/.6;hs=1-Math.pow(1-hs,3)}
       else if(e>end){hs=Math.max(0,1-(e-end)/.6);hs*=hs}
       else hs=1+.07*Math.sin((e-.6)*11);
-      hole.style.transform='scale('+hs.toFixed(3)+')';
+      setHole(hs);
       if(e>end+.6){
-        anim=null;mode='in';title.style.opacity='';hole.style.transform='scale(0)';
+        anim=null;mode='in';title.style.opacity='';setHole(0);[hole,holeb].forEach(function(h){h.classList.remove('on')});PS.forEach(function(x){x.st=0});
         lbn.textContent=t('launch');hint.textContent=hint0;hint.classList.remove('off');
       }
     }
@@ -834,6 +847,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
       var pi=pidx[li],tr='translate3d('+(-cx*LD[li]*par).toFixed(1)+'px,'+(-cy*LD[li]*par).toFixed(1)+'px,0)';
       if(pi>=0){
         var ps=PS[pi];tr+=' translate3d('+ps.sx.toFixed(1)+'px,'+ps.sy.toFixed(1)+'px,0) scale('+ps.sc.toFixed(3)+')';
+        if(ps.st>.02)tr+=' rotate('+ps.ang.toFixed(3)+'rad) scale('+(1+ps.st*1.5).toFixed(3)+','+(1-ps.st*.4).toFixed(3)+') rotate('+(-ps.ang).toFixed(3)+'rad)';
         var o=ps.op.toFixed(2);if(o!==lastO[pi]){lastO[pi]=o;layers[li].style.opacity=o;layers[li].style.visibility=ps.op>.01?'visible':'hidden'}
       }
       if(tr!==lastT[li]){layers[li].style.transform=tr;lastT[li]=tr}
