@@ -18,6 +18,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Fraunces:ital,opsz,wght,SOFT@1,9..144,500,100&family=EB+Garamond:wght@400&display=swap" rel="stylesheet">
+<script>document.documentElement.className+=" js"</script>
 <style>
 :root{
   color-scheme:dark;
@@ -261,6 +262,47 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
 .bar.warn i{background:#f2b866}.bar.crit i{background:#ff7a7a}
 #pusage .uw,#acard .small{font-size:.85em;opacity:.8}#pusage .uw{color:var(--gold);opacity:1;margin-top:4px}
 #pname{text-wrap:balance}
+#joy{position:absolute;z-index:4;transition:opacity .4s;right:16px;bottom:calc(88px + env(safe-area-inset-bottom,0px));width:108px;height:108px;border-radius:50%;
+  touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:grab;
+  background:radial-gradient(circle at 50% 50%,rgba(185,166,255,.3) 0,rgba(70,48,160,.55) 42%,rgba(13,11,36,.82) 74%);
+  border:1px solid rgba(243,230,207,.3);box-shadow:0 0 22px rgba(150,110,255,.45),inset 0 0 20px rgba(120,90,220,.55);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#joy[hidden]{display:none}
+#joy i{position:absolute;display:block;pointer-events:none}
+#joy .jgal{left:5%;top:5%;right:5%;bottom:5%;border-radius:50%;opacity:.8;
+  background:conic-gradient(from 0deg,rgba(255,140,210,0),rgba(255,140,210,.38) 12%,rgba(255,140,210,0) 28%,rgba(120,170,255,0) 50%,rgba(120,170,255,.38) 62%,rgba(120,170,255,0) 78%,rgba(255,140,210,0));
+  animation:spin 16s linear infinite}
+#joy .jst{left:0;top:0;right:0;bottom:0;border-radius:50%;
+  background:radial-gradient(circle at 22% 30%,#fff 0 1px,transparent 1.6px),radial-gradient(circle at 74% 24%,#f2b866 0 1.2px,transparent 1.8px),
+    radial-gradient(circle at 82% 66%,#fff 0 1px,transparent 1.6px),radial-gradient(circle at 30% 78%,#cdbcff 0 1.2px,transparent 1.8px),
+    radial-gradient(circle at 56% 14%,#fff 0 .8px,transparent 1.4px),radial-gradient(circle at 12% 58%,#fff 0 .8px,transparent 1.4px);
+  animation:jtw 2.6s ease-in-out infinite alternate}
+@keyframes jtw{from{opacity:.45}to{opacity:1}}
+#joy .jring{left:15%;top:15%;right:15%;bottom:15%;border-radius:50%;border:1px dashed rgba(243,230,207,.4);animation:spin 26s linear infinite reverse}
+#joy .jknob{left:50%;top:50%;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;will-change:transform;
+  background:radial-gradient(circle at 32% 28%,#fff6dc 0,#f2b866 30%,#b9a6ff 68%,#4a3fb0 100%);
+  box-shadow:0 0 14px rgba(242,184,102,.75),0 0 30px rgba(185,166,255,.55),inset -4px -3px 8px rgba(30,20,90,.55)}
+#joy .jknob.rel{transition:transform .28s cubic-bezier(.3,1.4,.5,1)}
+.zoomed #joy{opacity:0;pointer-events:none}
+.lite #joy{-webkit-backdrop-filter:none;backdrop-filter:none}
+@media (prefers-reduced-motion:reduce){#joy .jgal,#joy .jring,#joy .jst{animation:none}}
+@media (hover:hover) and (pointer:fine){#joy{display:none!important}}
+.one{display:inline-block;height:.72em;overflow:hidden}
+.js .one{color:transparent;text-shadow:none}
+/* rocket + crew */
+#rocket{position:absolute;left:0;top:0;z-index:4;pointer-events:none;visibility:hidden;will-change:transform;-webkit-filter:drop-shadow(0 0 6px rgba(247,236,216,.45));filter:drop-shadow(0 0 6px rgba(247,236,216,.45))}
+#rocket svg{display:block;width:100%;height:100%;overflow:visible}
+#rocket .fw{position:absolute;left:31%;top:93%;width:38%;height:62%;-webkit-transform-origin:50% 0;transform-origin:50% 0;-webkit-transform:scaleY(0);transform:scaleY(0)}
+#rocket .fw i{display:block;width:100%;height:100%;border-radius:45% 45% 50% 50%/15% 15% 85% 85%;background:linear-gradient(180deg,#fff7d6,#ffb04a 45%,rgba(255,110,50,0));-webkit-transform-origin:50% 0;transform-origin:50% 0;animation:fkr .09s linear infinite alternate}
+@keyframes fkr{from{transform:scale(1,.82)}to{transform:scale(.8,1.12)}}
+.pp{position:absolute;left:0;top:0;z-index:4;pointer-events:none;visibility:hidden;-webkit-transform-origin:0 0;transform-origin:0 0}
+.pp svg{display:block;width:100%;height:100%;overflow:visible}
+.walk .la{animation:lga .38s ease-in-out infinite alternate}
+.walk .lb{animation:lga .38s ease-in-out infinite alternate-reverse}
+.walk .bd{animation:bobp .38s ease-in-out infinite alternate}
+@keyframes lga{from{transform:rotate(-24deg)}to{transform:rotate(24deg)}}
+@keyframes bobp{from{transform:translateY(0)}to{transform:translateY(-1.5px)}}
+.lite #rocket{-webkit-filter:none;filter:none}
 /* uploads shown as feed posts */
 #flist li.post{display:block;padding:14px 14px 0;border-radius:14px;background:rgba(243,230,207,.07);border:1px solid rgba(243,230,207,.08);overflow:hidden}
 #flist{gap:14px}
@@ -309,15 +351,17 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
         <span data-i18n="school">Nguyen Quang Dieu High School for the Gifted</span>
       </span>
       <span class="sub">Chuyên Anh</span>
-      <span class="code" role="text" aria-label="AV1K18">AV1K18</span>
+      <span class="code" role="text" aria-label="AV1K18">AV<span class="one" aria-hidden="true">1</span>K18</span>
       <span class="quote">GIVE IT A SHOT, <em>không thích về chót</em></span>
     </div>
     <div class="l" data-d="1.6" id="holewrap"><div id="hole"><div class="hc"><div class="hf f"><div class="dk"><i></i></div></div></div></div></div>
   </div></div>
   <canvas id="fx"></canvas>
+  <div id="rocket" aria-hidden="true"><svg viewBox="0 0 60 140"><defs><linearGradient id="rkb" x1="0" x2="1"><stop offset="0" stop-color="#b3a283"/><stop offset=".2" stop-color="#e6d8ba"/><stop offset=".45" stop-color="#fff8e8"/><stop offset=".75" stop-color="#e9dbbd"/><stop offset="1" stop-color="#9d8d6d"/></linearGradient><linearGradient id="rkn" x1="0" x2="1"><stop offset="0" stop-color="#7a66d0"/><stop offset=".4" stop-color="#cdbcff"/><stop offset="1" stop-color="#5f4eb0"/></linearGradient><linearGradient id="rkf" x1="0" x2="1"><stop offset="0" stop-color="#e0d0ac"/><stop offset="1" stop-color="#8a7a5c"/></linearGradient><linearGradient id="rkz" x1="0" x2="1"><stop offset="0" stop-color="#6e6350"/><stop offset=".5" stop-color="#e2d6ba"/><stop offset="1" stop-color="#5d5342"/></linearGradient><linearGradient id="rko" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(70,50,30,0)"/><stop offset="1" stop-color="rgba(70,50,30,.42)"/></linearGradient><linearGradient id="rkr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe2a0"/><stop offset="1" stop-color="#8f6d2e"/></linearGradient><radialGradient id="rkw" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#2d3f8a"/><stop offset="1" stop-color="#0c1030"/></radialGradient><clipPath id="rkp"><path d="M30 1C46 20 50 50 48 114H12C10 50 14 20 30 1Z"/></clipPath><clipPath id="rkc"><circle cx="30" cy="62" r="14.5"/></clipPath></defs><path d="M12 96L1 128L19 114Z" fill="url(#rkf)"/><path d="M48 96L59 128L41 114Z" fill="#9c8c6c"/><path d="M12 96L19 114L12 112Z" fill="rgba(60,40,20,.25)"/><path d="M30 1C46 20 50 50 48 114H12C10 50 14 20 30 1Z" fill="url(#rkb)"/><g clip-path="url(#rkp)"><rect x="0" y="0" width="60" height="30" fill="url(#rkn)"/><path d="M0 30H60" stroke="rgba(50,35,100,.55)" stroke-width="1"/><rect x="0" y="96" width="60" height="18" fill="url(#rko)"/><path d="M12 82H48M12 108H48" stroke="rgba(110,90,60,.3)" stroke-width=".8"/><path d="M12 97H48V101H12Z" fill="#cdbcff" opacity=".85"/></g><path d="M23 34C20 52 19 82 20 108" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".55"/><path d="M30 1C14 20 10 50 12 114" stroke="rgba(205,188,255,.75)" stroke-width="1" fill="none"/><path d="M20 114h20l-4 9H24z" fill="url(#rkz)"/><circle cx="30" cy="62" r="17.5" fill="url(#rkr)"/><circle cx="30" cy="62" r="15.4" fill="url(#rkw)"/><image x="15.5" y="47.5" width="29" height="29" clip-path="url(#rkc)" preserveAspectRatio="xMidYMid slice"/><path d="M19.5 55Q24 47.5 33 48" stroke="#fff" stroke-width="2" fill="none" opacity=".55" stroke-linecap="round"/></svg><div class="fw"><i></i></div></div><div class="pp" id="cg" aria-hidden="true"><svg viewBox="0 0 30 60"><defs><radialGradient id="gsk" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#ffdcbc"/><stop offset="1" stop-color="#dc9c6c"/></radialGradient><linearGradient id="gsh" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#bcc6e2"/></linearGradient><linearGradient id="ghr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bfe4fb"/><stop offset="1" stop-color="#5f9fd4"/></linearGradient><linearGradient id="gbt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c3478"/><stop offset="1" stop-color="#0f1230"/></linearGradient><radialGradient id="ghg" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="rgba(255,255,255,.55)"/><stop offset=".5" stop-color="rgba(190,220,255,.18)"/><stop offset="1" stop-color="rgba(110,130,230,.32)"/></radialGradient></defs><ellipse cx="15" cy="59.4" rx="9" ry="1.5" fill="rgba(0,0,0,.4)"/><filter id="ghd" x="-12%" y="-12%" width="124%" height="124%"><feTurbulence type="fractalNoise" baseFrequency=".11" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.5" xChannelSelector="R" yChannelSelector="G"/></filter><g filter="url(#ghd)"><g class="bd"><path d="M5 19Q3 40 7 45H23Q27 40 25 19Z" fill="url(#ghr)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><rect x="9" y="29" width="12" height="14" rx="2.5" fill="url(#gsh)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><path d="M15 30l2 3.5-2 7-2-7z" fill="#262846" stroke="#3a2a45" stroke-width=".5" stroke-linejoin="round"/><path d="M7.5 42H22.5L25 51H5Z" fill="url(#gbt)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="15" cy="27.5" rx="6.5" ry="2" fill="#9fb0d8" stroke="#6f80b0" stroke-width=".5"/><circle cx="15" cy="18" r="8" fill="url(#gsk)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><circle cx="12.2" cy="18.6" r=".95" fill="#3a2430"/><circle cx="17.8" cy="18.6" r=".95" fill="#3a2430"/><circle cx="10.4" cy="21" r="1.5" fill="rgba(255,120,120,.35)"/><circle cx="19.6" cy="21" r="1.5" fill="rgba(255,120,120,.35)"/><path d="M7 18Q7 8 15 8.5Q23 8 23 18Q19 13 15 13Q11 13 7 18Z" fill="url(#ghr)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><circle cx="15" cy="18" r="11.5" fill="url(#ghg)" stroke="rgba(255,255,255,.9)" stroke-width="1.4"/><path d="M9.5 12Q12 8.5 16 8" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".85"/><path d="M10.5 38l2-2.2M13.5 40l2-2.2M16.5 40l2-2.2" stroke="rgba(70,60,130,.4)" stroke-width=".5" stroke-linecap="round" fill="none"/></g><g class="la" style="transform-origin:12px 51px"><rect x="10" y="50" width="4" height="9" rx="2" fill="url(#gsk)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/></g><g class="lb" style="transform-origin:18px 51px"><rect x="16" y="50" width="4" height="9" rx="2" fill="url(#gsk)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/></g></g></svg></div><div class="pp" id="cb" aria-hidden="true"><svg viewBox="0 0 30 60"><defs><radialGradient id="bsk" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#ffdcbc"/><stop offset="1" stop-color="#dc9c6c"/></radialGradient><linearGradient id="bsh" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#bcc6e2"/></linearGradient><linearGradient id="bhr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#aeb9d4"/></linearGradient><linearGradient id="bbt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#252c60"/><stop offset="1" stop-color="#0c0e24"/></linearGradient><radialGradient id="bhg" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="rgba(255,255,255,.55)"/><stop offset=".5" stop-color="rgba(190,220,255,.18)"/><stop offset="1" stop-color="rgba(110,130,230,.32)"/></radialGradient></defs><ellipse cx="15" cy="59.4" rx="9" ry="1.5" fill="rgba(0,0,0,.4)"/><filter id="bhd" x="-12%" y="-12%" width="124%" height="124%"><feTurbulence type="fractalNoise" baseFrequency=".11" numOctaves="2" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.5" xChannelSelector="R" yChannelSelector="G"/></filter><g filter="url(#bhd)"><g class="bd"><rect x="8" y="29" width="14" height="17" rx="2.5" fill="url(#bsh)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><path d="M15 30l2 3.5-2 8-2-8z" fill="#262846" stroke="#3a2a45" stroke-width=".5" stroke-linejoin="round"/><ellipse cx="15" cy="27.5" rx="6.5" ry="2" fill="#9fb0d8" stroke="#6f80b0" stroke-width=".5"/><circle cx="15" cy="18" r="8" fill="url(#bsk)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><circle cx="12.2" cy="18.6" r=".95" fill="#3a2430"/><circle cx="17.8" cy="18.6" r=".95" fill="#3a2430"/><circle cx="10.4" cy="21" r="1.5" fill="rgba(255,120,120,.35)"/><circle cx="19.6" cy="21" r="1.5" fill="rgba(255,120,120,.35)"/><path d="M7 18Q6 8 15 8Q24 8 23 18Q19 12.5 15 12.5Q11 12.5 7 18Z" fill="url(#bhr)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><circle cx="15" cy="18" r="11.5" fill="url(#bhg)" stroke="rgba(255,255,255,.9)" stroke-width="1.4"/><path d="M9.5 12Q12 8.5 16 8" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".85"/><path d="M10.5 38l2-2.2M13.5 40l2-2.2M16.5 40l2-2.2" stroke="rgba(70,60,130,.4)" stroke-width=".5" stroke-linecap="round" fill="none"/></g><g class="la" style="transform-origin:12px 45px"><rect x="9" y="44" width="5.5" height="11" rx="1.5" fill="url(#bbt)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><rect x="9" y="55" width="5.5" height="4" rx="2" fill="url(#bsk)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/></g><g class="lb" style="transform-origin:18px 45px"><rect x="15.5" y="44" width="5.5" height="11" rx="1.5" fill="url(#bbt)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/><rect x="15.5" y="55" width="5.5" height="4" rx="2" fill="url(#bsk)" stroke="#3a2a45" stroke-width=".75" stroke-linejoin="round" stroke-linecap="round"/></g></g></svg></div>
   <div class="hint" id="hint">Move or tilt to look around. Click for a star shower, or click the title to launch the planets.</div>
   <button class="btn" id="launchbtn" type="button">Launch planets</button>
   <button class="btn" id="tiltbtn" type="button" data-i18n="tilt" hidden>Tap to enable tilt</button>
+  <div id="joy" hidden role="application" aria-label="Look-around joystick"><i class="jst"></i><i class="jgal"></i><i class="jring"></i><i class="jknob"></i></div>
   <div id="bar"><button class="btn" id="langbtn" type="button"></button><button class="btn" id="acctbtn" type="button">Sign in</button></div>
   <div id="acct" hidden role="dialog" aria-modal="true" data-i18n-aria="acct_aria" aria-label="Account"><div id="acard"></div></div>
   <aside id="panel" inert data-i18n-aria="panel_aria" aria-label="Planet files">
@@ -362,7 +406,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   var LD=layers.map(function(el){return +el.dataset.d}),LZ=layers.map(function(el){return parseFloat(getComputedStyle(el).getPropertyValue('--z'))||0});
   var title=document.getElementById('title'),hint=document.getElementById('hint');
   /* language: English (US) / Vietnamese. Saved choice > ?lang= > phone/browser language */
-  var STR={en:{"school": "Nguyen Quang Dieu High School for the Gifted", "logo_alt": "Nguyen Quang Dieu High School logo", "stage": "Interactive banner: Chuyên Anh AV1K18, Nguyen Quang Dieu High School for the Gifted", "hint_mouse": "Move or tilt to look around. Click for a star shower, or click the title to launch the planets.", "hint_touch": "Tilt your phone to look around. Tap for a star shower, or tap the title to launch the planets.", "hint_out_mouse": "Click a planet to open its files. Click the title again for a black hole.", "hint_out_touch": "Tap a planet to open its files. Tap the title again for a black hole.", "launch": "Launch planets", "blackhole": "Black hole", "tilt": "Tap to enable tilt", "signin": "Sign in", "acct_aria": "Account", "panel_aria": "Planet files", "back": "Back to banner", "add": "Add files", "dropnote": "or drop them here. Up to 10 MB each: images, PDF, text, Word, PowerPoint or Excel.", "egg_aria": "A hidden message", "egg_alt": "Two students in space helmets walking on a whale toward a glowing star", "open_aria": "Open {name} files", "lang_to": "Tiếng Việt", "lang_aria": "Chuyển sang tiếng Việt (switch to Vietnamese)", "p_moon": "Moon - Literature & Memories", "p_giant": "Violet giant - Archives", "p_ringed": "Ringed planet - Arts", "p_mini": "Blue moon - About & Credits", "open_aria_mini": "Open About & Credits", "about_text": "Chuyên Anh AV1K18 is the class of Nguyen Quang Dieu High School for the Gifted behind this site. We built it ourselves as a living banner and a home for our class’s files.", "credits_h": "Made by", "role_idea": "Idea Giver", "role_test": "Tester", "role_back": "Backend Handler", "role_mkt": "Marketing Person", "credits_foot": "Thanks for stopping by our little corner of space.", "uw_crit": "Storage is almost full. New uploads may fail. Please remove files you no longer need.", "uw_warn": "Storage is getting full. Please remove files you no longer need.", "usage_line": "This planet: {a} · All planets: {b} of {c} ({p}%)", "load_err": "Could not load files.", "pinfo_unavail": "Files are unavailable right now.", "pinfo_member": "Only this planet’s captain can add files.", "pinfo_guest": "Anyone can view and download. Only this planet’s captain can add files, so sign in to request that.", "empty_list": "No files on this planet yet.", "save": "Save", "remove": "Remove", "open": "Open", "confirm_remove": "Remove “{name}”?", "remove_err": "Could not remove: {msg}", "preview_empty": "(empty file)", "preview_fail": "Preview unavailable.", "loading": "Loading…", "up_notready": "Not ready. Close this planet, open it again and retry.", "up_denied": "Only this planet’s captain can add files. Make sure you are signed in as the captain.", "preparing": "Preparing {label}…", "bad_type": "“{name}” is not an allowed type (images, PDF, text, Word, PowerPoint, Excel).", "too_big": "“{name}” is over 10 MB.", "storage_full": "Storage is full. Ask an admin to free up space before uploading “{name}”.", "uploading": "Uploading {label}…", "up_fail": "Upload of “{name}” failed: {msg}", "save_fail": "Could not save “{name}”: {msg}", "generic_err": "something went wrong", "uploaded": "Uploaded.", "v_user": "Username: 3 to 20 letters, numbers or underscores.", "v_pass": "Password needs at least 8 characters.", "wait": "Please wait…", "ago_now": "Just now", "ago_m": "{n} min ago", "ago_h": "{n} h ago", "ago_d": "{n} d ago", "file_kind": "{ext} file", "cap_need": "Please complete the human check first.", "cap_fail": "The human check failed. Please try again.", "v_email": "That school email does not look right.", "taken": "That username is taken.", "autologin": "Account created, but sign-in is not automatic yet. Ask an admin to turn off email confirmation.", "badlogin": "Wrong username or password.", "acct_unavail": "The account service is unavailable right now. Please try again later.", "close": "Close", "create": "Create account", "l_user": "Username", "ph_user": "letters, numbers, _", "l_pass": "Password", "ph_pass": "at least 8 characters", "l_email_opt": "School email (optional)", "have_acct": "I have an account", "new_here": "New here? Create account", "role_admin": "Admin", "role_captain": "Captain of {planet}", "role_member": "Member", "l_email_admin": "School email (optional, visible to admins)", "save_email": "Save email", "saved": "Saved.", "signout": "Sign out", "cap_h": "Become a captain", "cap_pending": "Your request for {planet} is waiting for an admin.", "cap_rejected": "Your last request was not approved. You can send a new one.", "cap_info": "Captains upload files to their planet. An admin checks every request.", "l_planet": "Planet", "l_note": "Note for the admins (who are you?)", "send_req": "Send request", "cap_dup": "You already have a pending request.", "admin_h": "Admin tools", "adm_storage": "Storage: {a} of {b} ({p}%)", "adm_note": ". Counts files added through the site; the exact figure is in Supabase under Storage.", "pending_h": "Pending requests", "pending_none": "No pending requests.", "approve": "Approve", "reject": "Reject", "caps_h": "Current captains", "caps_none": "No captains yet.", "confirm_rm_cap": "Remove @{name} as captain?"},vi:{"school": "Trường THPT Chuyên Nguyễn Quang Diêu", "logo_alt": "Logo Trường THPT Chuyên Nguyễn Quang Diêu", "stage": "Banner tương tác: Chuyên Anh AV1K18, Trường THPT Chuyên Nguyễn Quang Diêu", "hint_mouse": "Di chuột hoặc nghiêng thiết bị để nhìn quanh. Nhấp để có mưa sao băng, hoặc nhấp vào tiêu đề để thả các hành tinh.", "hint_touch": "Nghiêng điện thoại để nhìn quanh. Chạm để có mưa sao băng, hoặc chạm vào tiêu đề để thả các hành tinh.", "hint_out_mouse": "Nhấp vào một hành tinh để mở tệp của nó. Nhấp vào tiêu đề lần nữa để mở hố đen.", "hint_out_touch": "Chạm vào một hành tinh để mở tệp của nó. Chạm vào tiêu đề lần nữa để mở hố đen.", "launch": "Thả các hành tinh", "blackhole": "Hố đen", "tilt": "Chạm để bật chế độ nghiêng", "signin": "Đăng nhập", "acct_aria": "Tài khoản", "panel_aria": "Tệp của hành tinh", "back": "Quay lại banner", "add": "Thêm tệp", "dropnote": "hoặc kéo thả vào đây. Tối đa 10 MB mỗi tệp: ảnh, PDF, văn bản, Word, PowerPoint hoặc Excel.", "egg_aria": "Một thông điệp ẩn", "egg_alt": "Hai học sinh đội mũ phi hành gia đi trên lưng cá voi hướng tới một ngôi sao sáng", "open_aria": "Mở tệp của {name}", "lang_to": "English", "lang_aria": "Switch to English (chuyển sang tiếng Anh)", "p_moon": "Mặt Trăng - Góc Văn học & Ký ức", "p_giant": "Hành tinh tím khổng lồ - Góc Lưu trữ", "p_ringed": "Hành tinh có vành đai - Góc Nghệ thuật", "p_mini": "Mặt trăng xanh - Góc Giới thiệu & Đội ngũ", "open_aria_mini": "Mở Góc Giới thiệu & Đội ngũ", "about_text": "Chuyên Anh AV1K18 là lớp của Trường THPT Chuyên Nguyễn Quang Diêu đứng sau trang web này. Tụi mình tự tay làm ra nó như một banner sống động và là nơi lưu giữ tệp của lớp.", "credits_h": "Đội ngũ thực hiện", "role_idea": "Người nêu ý tưởng", "role_test": "Người kiểm thử", "role_back": "Người phụ trách backend", "role_mkt": "Người phụ trách marketing", "credits_foot": "Cảm ơn bạn đã ghé góc nhỏ này của vũ trụ.", "uw_crit": "Bộ nhớ gần đầy. Các lần tải lên mới có thể thất bại. Vui lòng xóa những tệp không cần nữa.", "uw_warn": "Bộ nhớ sắp đầy. Vui lòng xóa những tệp không cần nữa.", "usage_line": "Hành tinh này: {a} · Tất cả hành tinh: {b} / {c} ({p}%)", "load_err": "Không thể tải danh sách tệp.", "pinfo_unavail": "Hiện chưa thể dùng tính năng tệp.", "pinfo_member": "Chỉ đội trưởng của hành tinh này mới có thể thêm tệp.", "pinfo_guest": "Ai cũng có thể xem và tải xuống. Chỉ đội trưởng của hành tinh này mới có thể thêm tệp, vì vậy hãy đăng nhập để gửi yêu cầu.", "empty_list": "Hành tinh này chưa có tệp nào.", "save": "Lưu", "remove": "Xóa", "open": "Mở", "confirm_remove": "Xóa “{name}”?", "remove_err": "Không thể xóa: {msg}", "preview_empty": "(tệp trống)", "preview_fail": "Không thể xem trước.", "loading": "Đang tải…", "up_notready": "Chưa sẵn sàng. Hãy đóng hành tinh này, mở lại và thử lại.", "up_denied": "Chỉ đội trưởng của hành tinh này mới có thể thêm tệp. Hãy chắc chắn rằng bạn đã đăng nhập bằng tài khoản đội trưởng.", "preparing": "Đang chuẩn bị {label}…", "bad_type": "“{name}” không phải loại tệp được phép (ảnh, PDF, văn bản, Word, PowerPoint, Excel).", "too_big": "“{name}” lớn hơn 10 MB.", "storage_full": "Bộ nhớ đã đầy. Hãy nhờ quản trị viên giải phóng dung lượng trước khi tải lên “{name}”.", "uploading": "Đang tải lên {label}…", "up_fail": "Tải lên “{name}” thất bại: {msg}", "save_fail": "Không thể lưu “{name}”: {msg}", "generic_err": "đã xảy ra lỗi", "uploaded": "Đã tải lên.", "v_user": "Tên đăng nhập: 3 đến 20 ký tự gồm chữ cái không dấu, số hoặc dấu gạch dưới.", "v_pass": "Mật khẩu cần ít nhất 8 ký tự.", "wait": "Vui lòng chờ…", "ago_now": "Vừa xong", "ago_m": "{n} phút trước", "ago_h": "{n} giờ trước", "ago_d": "{n} ngày trước", "file_kind": "Tệp {ext}", "cap_need": "Vui lòng hoàn thành bước xác minh bạn là người thật trước.", "cap_fail": "Xác minh thất bại. Vui lòng thử lại.", "v_email": "Email trường này có vẻ chưa đúng.", "taken": "Tên đăng nhập này đã có người dùng.", "autologin": "Đã tạo tài khoản nhưng chưa thể tự đăng nhập. Hãy nhờ quản trị viên tắt xác nhận email.", "badlogin": "Sai tên đăng nhập hoặc mật khẩu.", "acct_unavail": "Dịch vụ tài khoản hiện không khả dụng. Vui lòng thử lại sau.", "close": "Đóng", "create": "Tạo tài khoản", "l_user": "Tên đăng nhập", "ph_user": "chữ, số, _", "l_pass": "Mật khẩu", "ph_pass": "ít nhất 8 ký tự", "l_email_opt": "Email trường (không bắt buộc)", "have_acct": "Tôi đã có tài khoản", "new_here": "Chưa có tài khoản? Tạo mới", "role_admin": "Quản trị viên", "role_captain": "Đội trưởng {planet}", "role_member": "Thành viên", "l_email_admin": "Email trường (không bắt buộc, quản trị viên có thể xem)", "save_email": "Lưu email", "saved": "Đã lưu.", "signout": "Đăng xuất", "cap_h": "Trở thành đội trưởng", "cap_pending": "Yêu cầu của bạn cho {planet} đang chờ quản trị viên duyệt.", "cap_rejected": "Yêu cầu gần nhất của bạn chưa được duyệt. Bạn có thể gửi yêu cầu mới.", "cap_info": "Đội trưởng tải tệp lên hành tinh của mình. Quản trị viên sẽ kiểm tra mọi yêu cầu.", "l_planet": "Hành tinh", "l_note": "Ghi chú cho quản trị viên (bạn là ai?)", "send_req": "Gửi yêu cầu", "cap_dup": "Bạn đã có một yêu cầu đang chờ.", "admin_h": "Công cụ quản trị", "adm_storage": "Dung lượng: {a} / {b} ({p}%)", "adm_note": ". Chỉ tính các tệp tải lên qua trang web; con số chính xác nằm trong Supabase ở mục Storage.", "pending_h": "Yêu cầu đang chờ", "pending_none": "Không có yêu cầu nào đang chờ.", "approve": "Duyệt", "reject": "Từ chối", "caps_h": "Đội trưởng hiện tại", "caps_none": "Chưa có đội trưởng nào.", "confirm_rm_cap": "Gỡ @{name} khỏi vai trò đội trưởng?"}};
+  var STR={en:{"school": "Nguyen Quang Dieu High School for the Gifted", "logo_alt": "Nguyen Quang Dieu High School logo", "stage": "Interactive banner: Chuyên Anh AV1K18, Nguyen Quang Dieu High School for the Gifted", "hint_mouse": "Move or tilt to look around. Click for a star shower, or click the title to launch the planets.", "hint_touch": "Tilt your phone to look around. Tap for a star shower, or tap the title to launch the planets.", "hint_out_mouse": "Click a planet to open its files. Click the title again for a black hole.", "hint_out_touch": "Tap a planet to open its files. Tap the title again for a black hole.", "launch": "Launch planets", "blackhole": "Black hole", "tilt": "Tap to enable tilt", "signin": "Sign in", "acct_aria": "Account", "panel_aria": "Planet files", "back": "Back to banner", "add": "Add files", "dropnote": "or drop them here. Up to 10 MB each: images, PDF, text, Word, PowerPoint or Excel.", "egg_aria": "A hidden message", "egg_alt": "Two students in space helmets walking on a whale toward a glowing star", "open_aria": "Open {name} files", "lang_to": "Tiếng Việt", "lang_aria": "Chuyển sang tiếng Việt (switch to Vietnamese)", "p_moon": "Moon - Literature & Memories", "p_giant": "Violet giant - Archives", "p_ringed": "Ringed planet - Arts", "p_mini": "Blue moon - About & Credits", "open_aria_mini": "Open About & Credits", "about_text": "Chuyên Anh AV1K18 is the class of Nguyen Quang Dieu High School for the Gifted behind this site. We built it ourselves as a living banner and a home for our class’s files.", "credits_h": "Made by", "role_idea": "Idea Giver", "role_test": "Tester", "role_back": "Backend Handler", "role_mkt": "Marketing Person", "credits_foot": "Thanks for stopping by our little corner of space.", "uw_crit": "Storage is almost full. New uploads may fail. Please remove files you no longer need.", "uw_warn": "Storage is getting full. Please remove files you no longer need.", "usage_line": "This planet: {a} · All planets: {b} of {c} ({p}%)", "load_err": "Could not load files.", "pinfo_unavail": "Files are unavailable right now.", "pinfo_member": "Only this planet’s captain can add files.", "pinfo_guest": "Anyone can view and download. Only this planet’s captain can add files, so sign in to request that.", "empty_list": "No files on this planet yet.", "save": "Save", "remove": "Remove", "open": "Open", "confirm_remove": "Remove “{name}”?", "remove_err": "Could not remove: {msg}", "preview_empty": "(empty file)", "preview_fail": "Preview unavailable.", "loading": "Loading…", "up_notready": "Not ready. Close this planet, open it again and retry.", "up_denied": "Only this planet’s captain can add files. Make sure you are signed in as the captain.", "preparing": "Preparing {label}…", "bad_type": "“{name}” is not an allowed type (images, PDF, text, Word, PowerPoint, Excel).", "too_big": "“{name}” is over 10 MB.", "storage_full": "Storage is full. Ask an admin to free up space before uploading “{name}”.", "uploading": "Uploading {label}…", "up_fail": "Upload of “{name}” failed: {msg}", "save_fail": "Could not save “{name}”: {msg}", "generic_err": "something went wrong", "uploaded": "Uploaded.", "v_user": "Username: 3 to 20 letters, numbers or underscores.", "v_pass": "Password needs at least 8 characters.", "wait": "Please wait…", "ago_now": "Just now", "ago_m": "{n} min ago", "ago_h": "{n} h ago", "ago_d": "{n} d ago", "file_kind": "{ext} file", "hint_joy": "Drag the galaxy joystick to look around. Tap for a star shower, or tap the title to launch the planets.", "joy_aria": "Look-around joystick", "cap_need": "Please complete the human check first.", "cap_fail": "The human check failed. Please try again.", "v_email": "That school email does not look right.", "taken": "That username is taken.", "autologin": "Account created, but sign-in is not automatic yet. Ask an admin to turn off email confirmation.", "badlogin": "Wrong username or password.", "acct_unavail": "The account service is unavailable right now. Please try again later.", "close": "Close", "create": "Create account", "l_user": "Username", "ph_user": "letters, numbers, _", "l_pass": "Password", "ph_pass": "at least 8 characters", "l_email_opt": "School email (optional)", "have_acct": "I have an account", "new_here": "New here? Create account", "role_admin": "Admin", "role_captain": "Captain of {planet}", "role_member": "Member", "l_email_admin": "School email (optional, visible to admins)", "save_email": "Save email", "saved": "Saved.", "signout": "Sign out", "cap_h": "Become a captain", "cap_pending": "Your request for {planet} is waiting for an admin.", "cap_rejected": "Your last request was not approved. You can send a new one.", "cap_info": "Captains upload files to their planet. An admin checks every request.", "l_planet": "Planet", "l_note": "Note for the admins (who are you?)", "send_req": "Send request", "cap_dup": "You already have a pending request.", "admin_h": "Admin tools", "adm_storage": "Storage: {a} of {b} ({p}%)", "adm_note": ". Counts files added through the site; the exact figure is in Supabase under Storage.", "pending_h": "Pending requests", "pending_none": "No pending requests.", "approve": "Approve", "reject": "Reject", "caps_h": "Current captains", "caps_none": "No captains yet.", "confirm_rm_cap": "Remove @{name} as captain?"},vi:{"school": "Trường THPT Chuyên Nguyễn Quang Diêu", "logo_alt": "Logo Trường THPT Chuyên Nguyễn Quang Diêu", "stage": "Banner tương tác: Chuyên Anh AV1K18, Trường THPT Chuyên Nguyễn Quang Diêu", "hint_mouse": "Di chuột hoặc nghiêng thiết bị để nhìn quanh. Nhấp để có mưa sao băng, hoặc nhấp vào tiêu đề để thả các hành tinh.", "hint_touch": "Nghiêng điện thoại để nhìn quanh. Chạm để có mưa sao băng, hoặc chạm vào tiêu đề để thả các hành tinh.", "hint_out_mouse": "Nhấp vào một hành tinh để mở tệp của nó. Nhấp vào tiêu đề lần nữa để mở hố đen.", "hint_out_touch": "Chạm vào một hành tinh để mở tệp của nó. Chạm vào tiêu đề lần nữa để mở hố đen.", "launch": "Thả các hành tinh", "blackhole": "Hố đen", "tilt": "Chạm để bật chế độ nghiêng", "signin": "Đăng nhập", "acct_aria": "Tài khoản", "panel_aria": "Tệp của hành tinh", "back": "Quay lại banner", "add": "Thêm tệp", "dropnote": "hoặc kéo thả vào đây. Tối đa 10 MB mỗi tệp: ảnh, PDF, văn bản, Word, PowerPoint hoặc Excel.", "egg_aria": "Một thông điệp ẩn", "egg_alt": "Hai học sinh đội mũ phi hành gia đi trên lưng cá voi hướng tới một ngôi sao sáng", "open_aria": "Mở tệp của {name}", "lang_to": "English", "lang_aria": "Switch to English (chuyển sang tiếng Anh)", "p_moon": "Mặt Trăng - Góc Văn học & Ký ức", "p_giant": "Hành tinh tím khổng lồ - Góc Lưu trữ", "p_ringed": "Hành tinh có vành đai - Góc Nghệ thuật", "p_mini": "Mặt trăng xanh - Góc Giới thiệu & Đội ngũ", "open_aria_mini": "Mở Góc Giới thiệu & Đội ngũ", "about_text": "Chuyên Anh AV1K18 là lớp của Trường THPT Chuyên Nguyễn Quang Diêu đứng sau trang web này. Tụi mình tự tay làm ra nó như một banner sống động và là nơi lưu giữ tệp của lớp.", "credits_h": "Đội ngũ thực hiện", "role_idea": "Người nêu ý tưởng", "role_test": "Người kiểm thử", "role_back": "Người phụ trách backend", "role_mkt": "Người phụ trách marketing", "credits_foot": "Cảm ơn bạn đã ghé góc nhỏ này của vũ trụ.", "uw_crit": "Bộ nhớ gần đầy. Các lần tải lên mới có thể thất bại. Vui lòng xóa những tệp không cần nữa.", "uw_warn": "Bộ nhớ sắp đầy. Vui lòng xóa những tệp không cần nữa.", "usage_line": "Hành tinh này: {a} · Tất cả hành tinh: {b} / {c} ({p}%)", "load_err": "Không thể tải danh sách tệp.", "pinfo_unavail": "Hiện chưa thể dùng tính năng tệp.", "pinfo_member": "Chỉ đội trưởng của hành tinh này mới có thể thêm tệp.", "pinfo_guest": "Ai cũng có thể xem và tải xuống. Chỉ đội trưởng của hành tinh này mới có thể thêm tệp, vì vậy hãy đăng nhập để gửi yêu cầu.", "empty_list": "Hành tinh này chưa có tệp nào.", "save": "Lưu", "remove": "Xóa", "open": "Mở", "confirm_remove": "Xóa “{name}”?", "remove_err": "Không thể xóa: {msg}", "preview_empty": "(tệp trống)", "preview_fail": "Không thể xem trước.", "loading": "Đang tải…", "up_notready": "Chưa sẵn sàng. Hãy đóng hành tinh này, mở lại và thử lại.", "up_denied": "Chỉ đội trưởng của hành tinh này mới có thể thêm tệp. Hãy chắc chắn rằng bạn đã đăng nhập bằng tài khoản đội trưởng.", "preparing": "Đang chuẩn bị {label}…", "bad_type": "“{name}” không phải loại tệp được phép (ảnh, PDF, văn bản, Word, PowerPoint, Excel).", "too_big": "“{name}” lớn hơn 10 MB.", "storage_full": "Bộ nhớ đã đầy. Hãy nhờ quản trị viên giải phóng dung lượng trước khi tải lên “{name}”.", "uploading": "Đang tải lên {label}…", "up_fail": "Tải lên “{name}” thất bại: {msg}", "save_fail": "Không thể lưu “{name}”: {msg}", "generic_err": "đã xảy ra lỗi", "uploaded": "Đã tải lên.", "v_user": "Tên đăng nhập: 3 đến 20 ký tự gồm chữ cái không dấu, số hoặc dấu gạch dưới.", "v_pass": "Mật khẩu cần ít nhất 8 ký tự.", "wait": "Vui lòng chờ…", "ago_now": "Vừa xong", "ago_m": "{n} phút trước", "ago_h": "{n} giờ trước", "ago_d": "{n} ngày trước", "file_kind": "Tệp {ext}", "hint_joy": "Kéo cần điều khiển thiên hà để nhìn quanh. Chạm để có mưa sao băng, hoặc chạm vào tiêu đề để thả các hành tinh.", "joy_aria": "Cần điều khiển nhìn quanh", "cap_need": "Vui lòng hoàn thành bước xác minh bạn là người thật trước.", "cap_fail": "Xác minh thất bại. Vui lòng thử lại.", "v_email": "Email trường này có vẻ chưa đúng.", "taken": "Tên đăng nhập này đã có người dùng.", "autologin": "Đã tạo tài khoản nhưng chưa thể tự đăng nhập. Hãy nhờ quản trị viên tắt xác nhận email.", "badlogin": "Sai tên đăng nhập hoặc mật khẩu.", "acct_unavail": "Dịch vụ tài khoản hiện không khả dụng. Vui lòng thử lại sau.", "close": "Đóng", "create": "Tạo tài khoản", "l_user": "Tên đăng nhập", "ph_user": "chữ, số, _", "l_pass": "Mật khẩu", "ph_pass": "ít nhất 8 ký tự", "l_email_opt": "Email trường (không bắt buộc)", "have_acct": "Tôi đã có tài khoản", "new_here": "Chưa có tài khoản? Tạo mới", "role_admin": "Quản trị viên", "role_captain": "Đội trưởng {planet}", "role_member": "Thành viên", "l_email_admin": "Email trường (không bắt buộc, quản trị viên có thể xem)", "save_email": "Lưu email", "saved": "Đã lưu.", "signout": "Đăng xuất", "cap_h": "Trở thành đội trưởng", "cap_pending": "Yêu cầu của bạn cho {planet} đang chờ quản trị viên duyệt.", "cap_rejected": "Yêu cầu gần nhất của bạn chưa được duyệt. Bạn có thể gửi yêu cầu mới.", "cap_info": "Đội trưởng tải tệp lên hành tinh của mình. Quản trị viên sẽ kiểm tra mọi yêu cầu.", "l_planet": "Hành tinh", "l_note": "Ghi chú cho quản trị viên (bạn là ai?)", "send_req": "Gửi yêu cầu", "cap_dup": "Bạn đã có một yêu cầu đang chờ.", "admin_h": "Công cụ quản trị", "adm_storage": "Dung lượng: {a} / {b} ({p}%)", "adm_note": ". Chỉ tính các tệp tải lên qua trang web; con số chính xác nằm trong Supabase ở mục Storage.", "pending_h": "Yêu cầu đang chờ", "pending_none": "Không có yêu cầu nào đang chờ.", "approve": "Duyệt", "reject": "Từ chối", "caps_h": "Đội trưởng hiện tại", "caps_none": "Chưa có đội trưởng nào.", "confirm_rm_cap": "Gỡ @{name} khỏi vai trò đội trưởng?"}};
   var LANG='';
   try{LANG=localStorage.getItem('lang')||''}catch(e){}
   var qm=/[?&]lang=(vi|en)\b/.exec(location.search);if(qm)LANG=qm[1];
@@ -438,16 +482,39 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   var tbtn=document.getElementById('tiltbtn');
   var permState=needPerm?'not asked yet':'not needed';
   function askGyro(){
-    if(!needPerm||permAsked)return;permAsked=true;permState='asking';
+    if(MOBILE||!needPerm||permAsked)return;permAsked=true;permState='asking';
     DeviceOrientationEvent.requestPermission().then(function(r){
       permState=r;
       if(r==='granted'){addEventListener('deviceorientation',onOrient);tbtn.hidden=true}else permAsked=false;
     }).catch(function(e){permState='error: '+((e&&e.message)||e);permAsked=false});
   }
-  if(needPerm){tbtn.hidden=false;tbtn.onclick=askGyro}
-  else{if(window.DeviceOrientationEvent)addEventListener('deviceorientation',onOrient);if(window.DeviceMotionEvent)addEventListener('devicemotion',onMotion)}
   var IS_TOUCH='ontouchstart' in window;
-  var hint0=t(IS_TOUCH?'hint_touch':'hint_mouse');hint.textContent=hint0;
+  /* phones/tablets (finger is the main input, no hover) get a look-around joystick instead of tilt; laptops and desktops never see it */
+  var MOBILE=!!(window.matchMedia&&matchMedia('(hover: none) and (pointer: coarse)').matches);
+  var joy=document.getElementById('joy'),jk=joy.querySelector('.jknob'),joyId=null;
+  joy.setAttribute('aria-label',t('joy_aria'));
+  function joyMove(e){
+    var r=joy.getBoundingClientRect(),R=r.width/2-22,dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),m=Math.hypot(dx,dy);
+    if(m>R){dx*=R/m;dy*=R/m}
+    jk.style.transform='translate3d('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px,0)';
+    if(!frozen){tx=clamp(dx/R);ty=clamp(dy/R);lastInput=performance.now()}
+  }
+  function joyEnd(e){
+    if(e.pointerId!==joyId)return;e.stopPropagation();
+    joyId=null;jk.classList.add('rel');jk.style.transform='translate3d(0,0,0)';tx=0;ty=0;lastInput=performance.now();
+  }
+  if(MOBILE){
+    tbtn.hidden=true;joy.hidden=false;
+    joy.addEventListener('pointerdown',function(e){
+      e.stopPropagation();e.preventDefault();joyId=e.pointerId;jk.classList.remove('rel');
+      try{joy.setPointerCapture(e.pointerId)}catch(_){}
+      hint.classList.add('off');joyMove(e);
+    });
+    joy.addEventListener('pointermove',function(e){if(e.pointerId!==joyId)return;e.stopPropagation();joyMove(e)});
+    joy.addEventListener('pointerup',joyEnd);joy.addEventListener('pointercancel',joyEnd);
+  }else if(needPerm){tbtn.hidden=false;tbtn.onclick=askGyro}
+  else{if(window.DeviceOrientationEvent)addEventListener('deviceorientation',onOrient);if(window.DeviceMotionEvent)addEventListener('devicemotion',onMotion)}
+  var hint0=t(MOBILE?'hint_joy':IS_TOUCH?'hint_touch':'hint_mouse');hint.textContent=hint0;
 
   /* star shower */
   function shower(x,y){
@@ -638,6 +705,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
 
   /* open / close a planet */
   function openPlanet(p){
+    RK.toPlanet(p);
     cur=p.dataset.p;frozen=true;tx=0;ty=0;
     var sw=stage.clientWidth,sh=stage.clientHeight,m=sw<700,
         px=p.offsetLeft+p.offsetWidth/2,py=p.offsetTop+p.offsetHeight/2,
@@ -652,6 +720,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   }
   function closePlanet(){
     if(!cur)return;
+    RK.back();
     var p=planets.filter(function(q){return q.dataset.p===cur})[0];
     world.style.transform='';stage.classList.remove('zoomed');
     panel.classList.remove('open');panel.inert=true;cur=null;frozen=false;lastInput=performance.now();
@@ -820,13 +889,86 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
     return{x:wx,y:wy};
   }
   function setLive(on){planets.forEach(function(pl){pl.classList.toggle('live',on)})}
+  /* ===== rocket + crew ===== */
+  var rk=document.getElementById('rocket'),rkFw=rk.querySelector('.fw'),crew=[document.getElementById('cg'),document.getElementById('cb')],slot=codeEl.querySelector('.one');
+  var RK={x:0,y:0,rot:0,s:1,fl:0,fly:null,follow:null,cr:0,crT:null,tok:0,pl:null,hs:0};
+  (function(){var im=rk.querySelector('image'),src=document.querySelector('.school img').src;im.setAttribute('href',src);im.setAttributeNS('http://www.w3.org/1999/xlink','href',src)})();
+  function r_lerp(a,b,t){return a+(b-a)*t}
+  function r_lerpA(a,b,t){return a+((((b-a)%360)+540)%360-180)*t}
+  function r_sm(t){return t<0?0:t>1?1:t*t*(3-2*t)}
+  function r_eIO(u){return u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2}
+  function dockT(){var r=slot.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2,rot:0,s:1,h:r.height}}
+  function planetT(p){var r=p.getBoundingClientRect(),R=r.width/2,H=Math.max(RK.hs,20),Ha=Math.min(H,R*.9),f=-38*Math.PI/180,b=R*.98,
+    cx=r.left+R,cy=r.top+r.height/2;
+    return {x:cx+Math.sin(f)*(b+Ha/2),y:cy-Math.cos(f)*(b+Ha/2),rot:-38,s:Ha/H,R:b,cx:cx,cy:cy,Ha:Ha,f:f}}
+  function run(dur,fn,done){rk.style.visibility='visible';RK.fly={t0:performance.now(),dur:dur,fn:fn,done:done}}
+  function flyTo(tf,dur,done){
+    var p0={x:RK.x,y:RK.y,rot:RK.rot,s:RK.s},t1=tf(),dx=t1.x-p0.x,dy=t1.y-p0.y,L=Math.hypot(dx,dy)||1,k=(dx>=0?-1:1)*.12*L,
+        cx=(p0.x+t1.x)/2-dy/L*k,cy=(p0.y+t1.y)/2+dx/L*k;
+    run(dur,function(u){
+      var e=r_eIO(u),g=tf(),q=1-e,
+          hx=2*q*(cx-p0.x)+2*e*(g.x-cx),hy=2*q*(cy-p0.y)+2*e*(g.y-cy),hd=Math.atan2(hx,-hy)*180/Math.PI,
+          r=r_lerpA(r_lerpA(p0.rot,hd,r_sm(u/.25)),g.rot,r_sm((u-.75)/.25));
+      return {x:q*q*p0.x+2*q*e*cx+e*e*g.x,y:q*q*p0.y+2*q*e*cy+e*e*g.y,rot:r,s:r_lerp(p0.s,g.s,e),fl:u<.85?1:(1-u)/.15};
+    },done);
+  }
+  function goHome(){RK.pl=null;RK.follow=null;flyTo(dockT,1500,function(){RK.follow=dockT})}
+  function crewTo(b,dur,done){RK.crT={t0:performance.now(),dur:dur,a:RK.cr,b:b,done:done}}
+  RK.toPlanet=function(p){
+    var k=++RK.tok;RK.pl=p;RK.follow=null;
+    flyTo(function(){return planetT(p)},1400,function(){
+      RK.follow=function(){var o=planetT(p);o.fl=0;return o};RK.follow.still=true;
+      setTimeout(function(){if(RK.tok===k)crewTo(1,1400)},350);
+    });
+  };
+  function ignite(done){var f=RK.follow;if(!f){done();return}run(500,function(u){var g=f();g.fl=u;g.x+=(Math.random()-.5)*u*1.6;return g},done)}
+  RK.back=function(){var k=++RK.tok;if(RK.cr>0)crewTo(0,1000,function(){if(RK.tok===k)ignite(function(){if(RK.tok===k)goHome()})});else goHome()};
+  RK.home=function(){++RK.tok;RK.crT=null;RK.cr=0;goHome()};
+  RK.flee=function(){
+    var k=++RK.tok,a={x:RK.x,y:RK.y,rot:RK.rot,s:RK.s};RK.follow=null;RK.crT=null;RK.cr=0;
+    var dx=a.x>innerWidth*.6?-1:1,dy=-1,n=Math.hypot(dx,dy),ux=dx/n,uy=dy/n,D=Math.hypot(innerWidth,innerHeight)*1.1,
+        ex=a.x+ux*D,ey=a.y+uy*D,px=-uy,py=ux,hd=Math.atan2(ux,-uy)*180/Math.PI,am=D*.08*(dx>0?1:-1);
+    run(1700,function(u){
+      var e=Math.pow(u,2.2),w=Math.sin(u*Math.PI/2)*u*am;
+      return {x:r_lerp(a.x,ex,e)+px*w,y:r_lerp(a.y,ey,e)+py*w,rot:r_lerpA(a.rot,hd,r_sm(u/.35)),s:r_lerp(a.s,.6,e),fl:1};
+    },function(){RK.fly=null});
+  };
+  function rkFrame(now){
+    var SR=stage.getBoundingClientRect(),d=dockT(),o=null;
+    if(Math.abs(d.h-RK.hs)>.5){RK.hs=d.h;var w=d.h*.43;rk.style.width=w+'px';rk.style.height=d.h+'px';rk.style.marginLeft=(-w/2)+'px';rk.style.marginTop=(-d.h/2)+'px'}
+    if(RK.fly){var f=RK.fly,u=Math.min(1,(now-f.t0)/f.dur);o=f.fn(u);if(u>=1){RK.fly=null;if(f.done)f.done()}}
+    else if(RK.follow){o=RK.follow();
+      if(!reduce&&!RK.follow.still){var tt=now/1000,hh=RK.hs;
+        o.x+=Math.sin(tt*1.3)*hh*.03;o.y+=Math.sin(tt*2.1)*hh*.05-hh*.03;o.rot+=Math.sin(tt*1.7)*7+Math.sin(tt*.6)*3;
+        o.fl=.6+.2*Math.sin(now/90)+.15*Math.sin(now/37)+.1*Math.sin(tt*2.1)}}
+    if(o){RK.x=o.x;RK.y=o.y;RK.rot=o.rot;RK.s=o.s;RK.fl=o.fl||0}
+    rk.style.transform='translate3d('+(RK.x-SR.left).toFixed(1)+'px,'+(RK.y-SR.top).toFixed(1)+'px,0) rotate('+RK.rot.toFixed(1)+'deg) scale('+RK.s.toFixed(3)+')';
+    rkFw.style.transform='scaleY('+RK.fl.toFixed(2)+')';
+    if(RK.crT){var c=RK.crT,v=Math.min(1,(now-c.t0)/c.dur);RK.cr=r_lerp(c.a,c.b,v);if(v>=1){RK.crT=null;RK.cr=c.b;if(c.done)c.done()}}
+    var show=RK.cr>0&&RK.pl;
+    crew.forEach(function(el,i){
+      if(!show){el.style.visibility='hidden';return}
+      var t=planetT(RK.pl),Hp=t.Ha*.62,w=Hp*.5,dist=(t.Ha*.55+i*Hp*.6)*RK.cr,fa=t.f+Math.min(1.3,dist/t.R),
+          fx=t.cx+Math.sin(fa)*t.R,fy=t.cy-Math.cos(fa)*t.R;
+      el.style.visibility='visible';el.style.opacity=r_sm(RK.cr*3).toFixed(2);el.style.width=w+'px';el.style.height=Hp+'px';
+      el.style.transform='translate('+(fx-SR.left).toFixed(1)+'px,'+(fy-SR.top).toFixed(1)+'px) rotate('+(fa*180/Math.PI).toFixed(1)+'deg) translate('+(-w/2)+'px,'+(-Hp)+'px)';
+      el.classList.toggle('walk',!!RK.crT);
+    });
+    requestAnimationFrame(rkFrame);
+  }
+  requestAnimationFrame(rkFrame);
+  setTimeout(function(){
+    if(RK.tok)return;
+    if(reduce){var d=dockT();RK.x=d.x;RK.y=d.y;rk.style.visibility='visible';RK.follow=dockT;return}
+    RK.x=-innerWidth*.1;RK.y=innerHeight*.95;RK.rot=40;flyTo(dockT,1900,function(){RK.follow=dockT});
+  },1000);
   function launchPlanets(){
     if(mode!=='in')return;mode='launching';aimPlanets();
     PS.forEach(function(s){s.sc=.04;s.op=0;s.st=0});
     anim={type:'launch',t0:performance.now()};lbn.textContent=t('blackhole');
   }
   function suckPlanets(){
-    if(mode!=='out')return;mode='sucking';setLive(false);var w=aimPlanets();
+    if(mode!=='out')return;mode='sucking';RK.flee();setLive(false);var w=aimPlanets();
     [hole,holeb].forEach(function(h){h.style.left=w.x+'px';h.style.top=w.y+'px';h.classList.add('on')});title.style.opacity='.25';hint.classList.add('off');
     anim={type:'suck',t0:performance.now()};
   }
@@ -855,7 +997,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
       else hs=1+.07*Math.sin((e-.6)*11);
       setHole(hs);
       if(e>end+.6){
-        anim=null;mode='in';title.style.opacity='';setHole(0);[hole,holeb].forEach(function(h){h.classList.remove('on')});PS.forEach(function(x){x.st=0});
+        anim=null;mode='in';RK.home();title.style.opacity='';setHole(0);[hole,holeb].forEach(function(h){h.classList.remove('on')});PS.forEach(function(x){x.st=0});
         lbn.textContent=t('launch');hint.textContent=hint0;hint.classList.remove('off');
       }
     }
@@ -910,7 +1052,7 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
   stage.addEventListener('pointerdown',function(e){
     if(!egg.hidden){hideEgg();return}
     if(busyEgg)return;
-    if(e.target.closest('#panel')||e.target.closest('#lb')||e.target.closest('#tiltbtn')||e.target.closest('#launchbtn')||e.target.closest('#acct')||e.target.closest('#bar'))return;
+    if(e.target.closest('#panel')||e.target.closest('#lb')||e.target.closest('#tiltbtn')||e.target.closest('#joy')||e.target.closest('#launchbtn')||e.target.closest('#acct')||e.target.closest('#bar'))return;
     askGyro();hint.classList.add('off');if(!gyro&&!frozen)aim(e.clientX,e.clientY);
     if(frozen){closePlanet();return}
     var pl=e.target.closest('.planet');
@@ -1021,7 +1163,8 @@ canvas{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
     langbtn.textContent=t('lang_to');langbtn.setAttribute('aria-label',t('lang_aria'));
     planets.forEach(function(pl){pl.setAttribute('aria-label',pl.getAttribute('data-p')==='mini'?t('open_aria_mini'):t('open_aria',{name:PN(pl.getAttribute('data-p'))}))});
     if(cur)pname.textContent=PN(cur);
-    hint0=t(IS_TOUCH?'hint_touch':'hint_mouse');
+    hint0=t(MOBILE?'hint_joy':IS_TOUCH?'hint_touch':'hint_mouse');
+    joy.setAttribute('aria-label',t('joy_aria'));
     hint.textContent=mode==='out'?t(IS_TOUCH?'hint_out_touch':'hint_out_mouse'):hint0;
     lbn.textContent=(mode==='in'||mode==='sucking')?t('launch'):t('blackhole');
     acctbtn.textContent=me?'@'+me.username:t('signin');
