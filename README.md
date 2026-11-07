@@ -45,4 +45,4 @@ then visit http://localhost:8000.
 
 ## License
 
-© 2026 AV1K18. All rights reserved.
+© AV1K18 2026. All rights reserved.
