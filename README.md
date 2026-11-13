@@ -14,7 +14,7 @@ An interactive class banner for **Chuyên Anh AV1K18**, Nguyen Quang Dieu High S
   - **Moon**: Literature & Memories
   - **Violet giant**: Archives
   - **Ringed planet**: Arts
-  - **Azure dwark**: About & Credits
+  - **Azure dwarf**: About & Credits
 - Shared class files: anyone can view and download, and each planet's captain can upload
 - English and Vietnamese, with a language switch
 
