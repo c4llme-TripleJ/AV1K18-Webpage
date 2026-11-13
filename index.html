@@ -946,6 +946,12 @@ html:not(.js) .one{width:auto;height:auto;overflow:visible}
     var sr=stage.getBoundingClientRect(),W=stage.clientWidth,H=stage.clientHeight,m=W<700;
     return {l:sr.left+14,t:sr.top+64,r:sr.left+(m?W:W-Math.min(400,W*.92))-14,b:sr.top+(m?H*.44:H)-14};
   }
+  var LOCK=null;   /* while a planet is being closed the rocket and crew stay glued to the spot they landed on */
+  function lockLanding(){
+    if(!RK.pl)return;
+    var r=RK.pl.getBoundingClientRect(),R=r.width/2;
+    LOCK=FL?{face:1,u:(FL.x-(r.left+R))/R,v:(FL.y-(r.top+R))/R}:{face:0,f:FA};
+  }
   var FL=null;   /* "face landing" spot, used when no point on the planet's rim is visible (a zoomed planet bigger than the screen) */
   function planetT(p){
     var r=p.getBoundingClientRect(),R=r.width/2,H=Math.max(RK.hs,20),Ha=Math.min(H,R*.9),b=R*.98,
@@ -958,8 +964,11 @@ html:not(.js) .one{width:auto;height:auto;overflow:visible}
         m=Math.min(m,clr(ox+Math.sin(fa)*(ob+Hp*.5),oy-Math.cos(fa)*(ob+Hp*.5),Hp*.8))}
       return m}
     function faceOk(q){return rm(q.x,q.y+Rv,Rv,0)>=0&&Math.hypot(q.x-cx,q.y-cy)<=R*.92}
-    if(FL&&!faceOk(FL))FL=null;
-    if(!FL&&rm(cx,cy,b,FA)<0){   /* the saved spot does not fit: nearest angle to the upper left that does */
+    if(LOCK){
+      if(LOCK.face){var lx=cx+LOCK.u*R,ly=cy+LOCK.v*R;return {x:lx,y:ly-Ha/2,rot:0,s:Ha/H,R:Rv,cx:lx,cy:ly+Rv,Ha:Ha,f:0}}
+      FA=LOCK.f}
+    if(!LOCK&&FL&&!faceOk(FL))FL=null;
+    if(!LOCK&&!FL&&rm(cx,cy,b,FA)<0){   /* the saved spot does not fit: nearest angle to the upper left that does */
       var base=-38*Math.PI/180,best=FA,bv=-1e9,ok=false;
       for(var k=0;k<=60&&!ok;k++)for(var sg=-1;sg<=1&&!ok;sg+=2){
         if(k===0&&sg===1)continue;
@@ -968,7 +977,7 @@ html:not(.js) .one{width:auto;height:auto;overflow:visible}
       FA=best;
       if(!ok){   /* no visible rim spot: stand on the planet's face, as far to the upper left as fits */
         for(var yy=F.t;yy<=F.b&&!FL;yy+=16)for(var xx=F.l;xx<=F.r&&!FL;xx+=16){var q={x:xx,y:yy};if(faceOk(q))FL=q}}}
-    if(FL)return {x:FL.x,y:FL.y-Ha/2,rot:0,s:Ha/H,R:Rv,cx:FL.x,cy:FL.y+Rv,Ha:Ha,f:0};
+    if(FL&&!LOCK)return {x:FL.x,y:FL.y-Ha/2,rot:0,s:Ha/H,R:Rv,cx:FL.x,cy:FL.y+Rv,Ha:Ha,f:0};
     var f=FA;
     return {x:cx+Math.sin(f)*(b+Ha/2),y:cy-Math.cos(f)*(b+Ha/2),rot:f*180/Math.PI,s:Ha/H,R:b,cx:cx,cy:cy,Ha:Ha,f:f}}
   function run(dur,fn,done){rk.style.visibility='visible';RK.fly={t0:performance.now(),dur:dur,fn:fn,done:done}}
@@ -985,14 +994,14 @@ html:not(.js) .one{width:auto;height:auto;overflow:visible}
   function goHome(){RK.pl=null;RK.follow=null;flyTo(dockT,1500,function(){RK.follow=dockT})}
   function crewTo(b,dur,done){RK.crT={t0:performance.now(),dur:dur,a:RK.cr,b:b,done:done}}
   RK.toPlanet=function(p){
-    var k=++RK.tok;RK.pl=p;RK.follow=null;FA=-38*Math.PI/180;FL=null;
+    var k=++RK.tok;RK.pl=p;RK.follow=null;FA=-38*Math.PI/180;FL=null;LOCK=null;
     flyTo(function(){return planetT(p)},1400,function(){
       RK.follow=function(){var o=planetT(p);o.fl=0;return o};RK.follow.still=true;
       setTimeout(function(){if(RK.tok===k)crewTo(1,1400)},350);
     });
   };
   function ignite(done){var f=RK.follow;if(!f){done();return}run(500,function(u){var g=f();g.fl=u;g.x+=(Math.random()-.5)*u*1.6;return g},done)}
-  RK.back=function(){var k=++RK.tok;if(RK.cr>0)crewTo(0,1000,function(){if(RK.tok===k)ignite(function(){if(RK.tok===k)goHome()})});else goHome()};
+  RK.back=function(){var k=++RK.tok;lockLanding();if(RK.cr>0)crewTo(0,1000,function(){if(RK.tok===k)ignite(function(){if(RK.tok===k)goHome()})});else goHome()};
   RK.returnTitle=function(){
     var k=++RK.tok;RK.crT=null;RK.cr=0;RK.pl=null;RK.follow=null;
     if(reduce){codeEl.classList.remove('eaten');goHome();return}
