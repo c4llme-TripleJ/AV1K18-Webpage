@@ -8,13 +8,13 @@ An interactive class banner for **Chuyên Anh AV1K18**, Nguyen Quang Dieu High S
 
 ## What's inside
 
-- A space scene that reacts to your mouse or phone tilt
+- A space scene that reacts to your mouse or phone joystick movement
 - Tap or click for a star shower; tap the title to launch the planets
 - Four planets, each a corner of the site:
   - **Moon**: Literature & Memories
   - **Violet giant**: Archives
   - **Ringed planet**: Arts
-  - **Blue moon**: About & Credits
+  - **Azure dwark**: About & Credits
 - Shared class files: anyone can view and download, and each planet's captain can upload
 - English and Vietnamese, with a language switch
 
@@ -22,7 +22,7 @@ An interactive class banner for **Chuyên Anh AV1K18**, Nguyen Quang Dieu High S
 
 - One static file, `index.html`, in plain HTML, CSS and JavaScript
 - [Supabase](https://supabase.com) for accounts and file storage
-- Hosted on Cloudflare, deployed from this repo
+- Hosted on Cloudflare Workers, deployed from this repo
 
 ## Run it locally
 
